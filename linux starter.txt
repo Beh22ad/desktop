@@ -1,0 +1,37 @@
+install pavucontrol for KDE sound problem
+flameshot gui
+redhift-gtk
+sudo apt-get remove  firefox
+sudo apt-get purge firefox
+sudo rm -Rf /etc/firefox/
+sudo rm -Rf /usr/lib/firefox*
+
+sudo apt-get install netselect-apt
+sudo netselect-apt
+/etc/apt/source.list
+
+
+ir
+/usr/share/X11/xkb/symbols/
+sudo cp ./ir /usr/share/X11/xkb/symbols/ir
+
+clipboard manager
+sudo apt install diodon
+bindsym $mod+v  exec diodon
+
+
+
+Mount Drives:
+sudo blkid
+sudo geany /etc/fstab
+
+UUID=30005F8C005F57C4                     /home/b/C       ntfs    rw,exec 0 0
+UUID=2AA869F2A869BD47                     /home/b/D       ntfs    rw,exec 0 0
+
+
+
+Github
+git remote set-url origin https://0000000000000@github.com/beh22ad/desktop
+
+
+

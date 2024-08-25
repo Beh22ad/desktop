@@ -1,0 +1,15 @@
+{
+  "Untitled 1": {
+    "pin": false,
+    "sizeGrip": true,
+    "x": 421,
+    "y": 200,
+    "width": 517,
+    "height": 390,
+    "background": "#FFFF7F",
+    "foreground": "#000000",
+    "fontSize": 13,
+    "fontFamily": "Sans Serif",
+    "opacity": 1.0
+  }
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>catfish</icon>
+	<name>Find files</name>
+	<submenu></submenu>
+	<unique-id>1721814419610377-1</unique-id>
+	<command>catfish --hidden %f</command>
+	<description>Search for files with Catfish</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open terminal here</name>
+	<submenu></submenu>
+	<unique-id>Action_Open_Terminal_Here</unique-id>
+	<command>sh -c &apos;cd &quot;$1&quot;; x-terminal-emulator&apos; _ %f</command>
+	<description></description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>system-file-manager</icon>
+	<name>Open as root</name>
+	<submenu></submenu>
+	<unique-id>1721814419610391-2</unique-id>
+	<command>pkexec thunar %f</command>
+	<description>Open directory as root</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>accessories-text-editor</icon>
+	<name>Open as root</name>
+	<submenu></submenu>
+	<unique-id>1721814419610396-3</unique-id>
+	<command>pkexec bl-text-editor %F</command>
+	<description>Open text files as root</description>
+	<range></range>
+	<patterns>*</patterns>
+	<other-files/>
+	<text-files/>
+</action>
+</actions>
