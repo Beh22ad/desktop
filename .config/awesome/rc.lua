@@ -21,7 +21,25 @@ require("awful.hotkeys_popup.keys")
 -- Load Debian menu entries
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
-
+local home = os.getenv("HOME")
+----------------------------------------------------------------
+-- change color of each tav
+--local original_taglist_label = awful.widget.taglist.taglist_label
+--local tag_colors_b = { "#3a3f50", "#3a3a50", "#3f3a50", "#453a50",
+--  "#4b3b51", "#4a3a50", "#503a50", "#503a4a", "#503a45" }
+--local tag_colors_s = { "#606a85", "#606085", "#6a6085", "#736085",
+--  "#7b6085", "#7c6085", "#856085", "#85607c", "#856073" }
+--function awful.widget.taglist.taglist_label(tag, args, tb)
+--  local idx = (tag.index - 1) % #tag_colors_b + 1
+--  local args = {bg_focus = tag_colors_s[idx]}
+--  local text, bg, bg_image, icon, other_args =
+--    original_taglist_label(tag, args, tb)
+--  if bg == nil then
+--    bg = tag_colors_b[idx]
+--  end
+--  return text, bg, bg_image, icon, other_args
+--end
+--------------------------------------------------------------------
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -98,22 +116,42 @@ myawesomemenu = {
 }
 
 local menu_awesome = { "awesome", myawesomemenu, beautiful.awesome_icon }
-local menu_terminal = { "open terminal", terminal }
+local menu_terminal = { "open terminal", terminal, home .. "/.icons/Papirus/32x32/apps/Terminal.svg"}
+local LosslessCut = { "LosslessCut", function() awful.util.spawn_with_shell("~/D/setup/linux/LosslessCut.AppImage") end, home .. "/.icons/Papirus/32x32/apps/losslesscut.svg" }
+local Inkscape = { "Inkscape", function() awful.util.spawn_with_shell("~/D/setup/linux/Inkscape.AppImage") end, home .. "/.icons/Papirus/32x32/apps/inkscape.svg" }
+local Gimp = { "Gimp", function() awful.util.spawn_with_shell("~/D/setup/linux/gimp.AppImage") end, home .. "/.icons/Papirus/32x32/apps/gimp.svg" }
+local Krita = { "Krita", function() awful.util.spawn_with_shell("~/D/setup/linux/krita.appimage") end, home .. "/.icons/Papirus/32x32/apps/krita.svg" }
+local kdenlive = { "kdenlive", function() awful.util.spawn_with_shell("~/D/setup/linux/kdenlive.AppImage") end, home .. "/.icons/Papirus/32x32/apps/kdenlive.svg" }
+local HandBrake = { "HandBrake", function() awful.util.spawn_with_shell("~/D/setup/linux/HandBrake.AppImage") end, home .. "/.icons/Papirus/32x32/apps/fr.handbrake.ghb.svg" }
+local Supertuxkart = { "Supertuxkart", function() awful.util.spawn_with_shell("~/D/setup/linux/Supertuxkart.AppImage") end, home .. "/.icons/Papirus/32x32/apps/supertuxkart.svg" }
+local Calculator = { "Calculator", function() awful.util.spawn_with_shell("galculator") end, home .. "/.icons/Papirus/32x32/apps/galculator.svg" }
+local Exit = { "Exit", "bl-exit", home .. "/.icons/Papirus/32x32/apps/deepin-crossover.svg" }
 
-if has_fdo then
-    mymainmenu = freedesktop.menu.build({
-        before = { menu_awesome },
-        after =  { menu_terminal }
-    })
-else
+
+--if has_fdo then
+--   mymainmenu = freedesktop.menu.build({
+--       before = { menu_awesome },
+--        after =  { menu_terminal }
+--    })
+--else
     mymainmenu = awful.menu({
         items = {
                   menu_awesome,
+                  LosslessCut,
+                  Inkscape,
+                  Gimp,
+                  Krita,
+                  kdenlive,
+                  HandBrake,
+                  Calculator,
+                  Supertuxkart,
                   { "Debian", debian.menu.Debian_menu.Debian },
-                  menu_terminal,
+
+                 menu_terminal,
+                 Exit,
                 }
     })
-end
+--end
 
 
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
@@ -220,7 +258,7 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ "🌍", "🗃️", "📝", "4", "5", "6", "7", "8", "💻" }, s, awful.layout.layouts[1])
 
 
 -- Farsi date
@@ -367,15 +405,32 @@ update_time()
 	local centered_layoutbox = wibox.container.place(s.mylayoutbox, "center")
 
     -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist {
-        screen  = s,
-        filter  = awful.widget.taglist.filter.all,
-        layout = {
-			spacing = 10,
-			layout = wibox.layout.fixed.horizontal,
+s.mytaglist = awful.widget.taglist {
+    screen  = s,
+    filter  = awful.widget.taglist.filter.all,
+    layout = {
+        spacing = 0,
+        layout = wibox.layout.fixed.horizontal,
+    },
+    buttons = taglist_buttons,
+    widget_template = {
+        {
+            {
+                {
+                    id     = 'text_role',
+                    widget = wibox.widget.textbox,
+                },
+                widget = wibox.container.place,  -- This centers the text
+            },
+            forced_width = 30,  -- Set the desired width here
+            widget = wibox.container.background,
         },
-        buttons = taglist_buttons
+        id     = 'background_role',
+        widget = wibox.container.background,
     }
+}
+
+
 
 -- Tasklist buttons
 local tasklist_buttons = gears.table.join(
@@ -856,6 +911,8 @@ client.connect_signal("manage", function (c)
     end
 end)
 
+
+
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
 client.connect_signal("request::titlebars", function(c)
     -- buttons for the titlebar
@@ -932,6 +989,7 @@ client.connect_signal("property::fullscreen", function(c)
         end
     end
 end)
+
 
 -- jump to urgent client
 client.connect_signal("property::urgent", function(c)

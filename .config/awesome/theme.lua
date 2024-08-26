@@ -15,6 +15,8 @@ local main_color = "#7a00df"
 local main_color_saturated = "#ad00ff"
 
 theme.font          = "Sans 10"
+theme.menu_font = "Sans 15"
+
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#50003E"
@@ -65,8 +67,10 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = themes_path.."default/submenu.png"
-theme.menu_height = dpi(18)
-theme.menu_width  = dpi(200)
+theme.menu_height = dpi(40)
+theme.menu_width  = dpi(300)
+theme.menu_border_width = 0
+theme.menu_margin = 10
 
 -- You can add as many variables as
 -- you wish and access them by using
