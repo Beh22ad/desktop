@@ -933,3 +933,13 @@ client.connect_signal("property::fullscreen", function(c)
     end
 end)
 
+-- jump to urgent client
+client.connect_signal("property::urgent", function(c)
+    if c.urgent then
+        local t = c.first_tag
+        if t and not t.selected then
+            t:view_only()
+        end
+        c:jump_to()
+    end
+end)
