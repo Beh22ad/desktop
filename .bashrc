@@ -116,7 +116,7 @@ fi
 
 
 function bepass() {
-   cd "~/D/setup/linux/VPN/bepass/"
+   cd ~/D/setup/linux/VPN/bepass/
    ./bepass;
 
 }

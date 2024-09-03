@@ -16,7 +16,7 @@ local main_color_saturated = "#ad00ff"
 
 theme.font          = "Sans 10"
 theme.menu_font = "Sans 15"
-
+theme.taglist_icon_size = 20
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#50003E"

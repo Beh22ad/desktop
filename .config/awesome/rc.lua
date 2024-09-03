@@ -22,8 +22,10 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 local home = os.getenv("HOME")
+local batteryarc_widget = require("batteryarc")
+local logout_menu_widget = require("logout-menu")
 ----------------------------------------------------------------
--- change color of each tav
+-- change color of each tag
 --local original_taglist_label = awful.widget.taglist.taglist_label
 --local tag_colors_b = { "#3a3f50", "#3a3a50", "#3f3a50", "#453a50",
 --  "#4b3b51", "#4a3a50", "#503a50", "#503a4a", "#503a45" }
@@ -161,12 +163,17 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
+-- spacer
+local _ = wibox.container.margin()
+_:set_right(5)
+_:set_left(5)
+
 -- Keyboard map indicator and switcher
 local mykeyboardlayout = awful.widget.keyboardlayout()
 local keyboard_box = wibox.container.margin(mykeyboardlayout.widget)
 keyboard_box:set_top(5)
 keyboard_box:set_left(10)
-
+keyboard_box:set_right(5)
 local function update_keyboard_layout()
     local layout = mykeyboardlayout.widget.text
     local color = "#FFDAF7"
@@ -258,7 +265,9 @@ awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
     -- Each screen has its own tag table.
-    awful.tag({ "🌍", "🗃️", "📝", "4", "5", "6", "7", "8", "💻" }, s, awful.layout.layouts[1])
+ awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+
+
 
 
 -- Farsi date
@@ -542,7 +551,9 @@ s.mytasklist = create_tasklist_widget(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
           --  mylauncher,
+
             s.mytaglist,
+            centered_layoutbox, _,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
@@ -554,14 +565,22 @@ s.mytasklist = create_tasklist_widget(s)
 			--	mykeyboardlayout,
 			keyboard_box,
 			},
-            --wibox.widget.systray(),
+			batteryarc_widget({
+						markup = true,
+						show_current_level = true,
+						arc_thickness = 3,
+					}),
             mysystray_widget,
             temprature_widget,
             download_widget,
             data_textbox,
             time_date_widget,
             --mytextclock,
-            centered_layoutbox,
+
+            logout_menu_widget{
+            font = 'Play 14',
+            onlock = function() awful.spawn.with_shell('i3lock-fancy') end
+        }
 
         },
     }
@@ -586,8 +605,8 @@ globalkeys = gears.table.join(
               {description = "view previous", group = "tag"}),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
               {description = "view next", group = "tag"}),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
-              {description = "go back", group = "tag"}),
+  --  awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
+  --            {description = "go back", group = "tag"}),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -629,7 +648,7 @@ globalkeys = gears.table.join(
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
+    awful.key({ modkey, "Shift"   }, "q", function () awful.util.spawn_with_shell("bl-exit") end ,
               {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
@@ -681,7 +700,7 @@ globalkeys = gears.table.join(
 
 	   awful.key({  },            "Print",     function () awful.util.spawn_with_shell("flameshot gui") end,{description = "Screen shot", group = "client"}),
 
-	   awful.key({ modkey },       " "     ,     function () awful.util.spawn_with_shell("jgmenu_run") end,{description = "Menu", group = "client"}),
+	   awful.key({ modkey },     " "    ,     function () awful.util.spawn_with_shell("jgmenu_run") end,{description = "Menu", group = "client"}),
 	   awful.key({ modkey },       "h"     ,     function () awful.util.spawn_with_shell("x-terminal-emulator -T 'htop task manager' -e htop") end,{description = "Htop", group = "client"}),
 	   awful.key({ modkey },       "Escape"     ,     function () awful.util.spawn_with_shell("systemctl suspend") end,{description = "sleep", group = "client"}),
 	   awful.key({ modkey },       "v"     ,     function () awful.util.spawn_with_shell("xfce4-clipman-history") end,{description = "Clip board", group = "client"}),
@@ -712,7 +731,7 @@ globalkeys = gears.table.join(
 )
 
 clientkeys = gears.table.join(
-    awful.key({ modkey,           }, "f",
+    awful.key({ modkey,   "Control"        }, "f",
         function (c)
             c.fullscreen = not c.fullscreen
             c:raise()
@@ -849,6 +868,8 @@ awful.rules.rules = {
         },
         class = {
           "Arandr",
+          "WmanExit",
+          "Mirage",
           "mpv",
           "vlc",
           "Galculator",
