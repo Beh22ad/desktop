@@ -25,13 +25,13 @@ local function worker(user_args)
 
     local font = args.font or 'Play 6'
     local arc_thickness = args.arc_thickness or 2
-    local show_current_level = args.show_current_level or false
+    local show_current_level = args.show_current_level or true
     local size = args.size or 18
     local timeout = args.timeout or 10
     local show_notification_mode = args.show_notification_mode or 'on_hover' -- on_hover / on_click
     local notification_position = args.notification_position or 'top_right' -- see naughty.notify position argument
 
-    local main_color = args.main_color or beautiful.fg_color
+    local main_color = args.main_color or beautiful.fg_color or '#CCCCCC'
     local bg_color = args.bg_color or '#ffffff11'
     local low_level_color = args.low_level_color or '#e53935'
     local medium_level_color = args.medium_level_color or '#c0ca33'
@@ -119,7 +119,8 @@ local function worker(user_args)
             text.text = ''
         end
 
-        if charge < 15 and charge > 0 then
+  --      if charge < 15 and charge > 0 then
+        if charge < 55 and charge > 0 then
             widget.colors = { low_level_color }
             if enable_battery_warning and status ~= 'Charging' and os.difftime(os.time(), last_battery_check) > 300 then
                 -- if 5 minutes have elapsed since the last warning
@@ -127,8 +128,11 @@ local function worker(user_args)
 
                 show_battery_warning()
             end
-        elseif charge > 15 and charge < 40 then
+   --     elseif charge > 15 and charge < 40 then
+        elseif charge > 55 and charge < 65 then
             widget.colors = { medium_level_color }
+        elseif charge > 65 and charge < 100 then
+            widget.colors = { "#FFFF00" }
         else
             widget.colors = { main_color }
         end

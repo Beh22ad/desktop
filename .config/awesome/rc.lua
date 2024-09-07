@@ -345,7 +345,7 @@ date_widget.visible = false
 time_widget.markup = '<span color="#FFDAF7" font="10">Time</span>'
 
 --date_widget.font =10
-date_widget.markup = '<span color="#FFDAF7" font="Bold 10">Date</span>'
+date_widget.markup = '<span color="#FFDAF7" font="Bold 12">Date</span>'
 
 -- Create a function to update time
 local function update_time()
@@ -355,8 +355,8 @@ end
 
 -- Create a function to update date
 local function update_date()
-    local date_text = os.date(" %B | %Y/%m/%d ")
-    date_widget.markup = '<span color="#FFDAF7" font="Bold 10">' .. date_text .. '</span>'
+    local date_text = os.date(" %B \n %Y/%m/%d ")
+    date_widget.markup = '<span color="#FFDAF7" font="Bold 12">' .. date_text .. '</span>'
 end
 
 -- Timer to update time every minute
@@ -379,20 +379,30 @@ local time_date_widget = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
 }
 
--- Show date on hover
-time_date_widget:connect_signal("mouse::enter", function()
-    date_widget.visible = true
-    time_widget.visible = false
-end)
 
-time_date_widget:connect_signal("mouse::leave", function()
-    date_widget.visible = false
-    time_widget.visible = true
-end)
 
 -- Initial update
 update_date()
 update_time()
+
+
+
+
+
+-- Display date as a notification when clicking on the time widget
+time_widget:connect_signal("button::press", function()
+    local date_text = os.date("%B \n %Y/%m/%d")
+    naughty.notify {
+        text = date_text,
+        timeout = 5,
+        position = "top_right",
+        margin = 10,
+        width = 200,
+        height = 70,
+        font = "Sans Bold 12",
+    }
+end)
+
 
 
 
@@ -553,7 +563,7 @@ s.mytasklist = create_tasklist_widget(s)
           --  mylauncher,
 
             s.mytaglist,
-            centered_layoutbox, _,
+           _,centered_layoutbox, _,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
@@ -566,9 +576,10 @@ s.mytasklist = create_tasklist_widget(s)
 			keyboard_box,
 			},
 			batteryarc_widget({
-						markup = true,
+						show_notification_mode = "on_click",
 						show_current_level = true,
-						arc_thickness = 3,
+						arc_thickness = 2,
+						size=15,
 					}),
             mysystray_widget,
             temprature_widget,
