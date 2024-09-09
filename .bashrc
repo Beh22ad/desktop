@@ -142,6 +142,10 @@ function wps() {
    cd ~/D/setup/linux/VPN/Warp-plus/
 	./warp-plus --scan
 }
+function wpe() {
+   cd ~/D/setup/linux/VPN/Warp-plus/
+	./warp-plus -e [2606:4700:d1::c993:5abb:1a22:99d9]:1002
+}
 function red() {
 	sudo redshift -l 35.7:51.26 -t 5700:3600 -g 0.8 -m randr -v
 
