@@ -22,8 +22,12 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 local home = os.getenv("HOME")
+--local downloadMeter = home .. '/.config/awesome/script/download-meter-raw.sh'
+--local Fadate = home .. "/.config/awesome/script/full-data.sh"
 local batteryarc_widget = require("batteryarc")
 local logout_menu_widget = require("logout-menu")
+local weather_widget = require("weather")
+
 ----------------------------------------------------------------
 -- change color of each tag
 --local original_taglist_label = awful.widget.taglist.taglist_label
@@ -275,7 +279,7 @@ local data_textbox = wibox.widget.textbox()
 data_textbox:set_markup('<span font="Vazirmatn 10" foreground="#FFDAF7">...</span>')
 
 local function update_data()
-    awful.spawn.easy_async([[bash -c "~/D/setup/linux/xfce/full-data.sh"]], function(stdout)
+    awful.spawn.easy_async([[bash -c '/home/b/.config/awesome/script/full-data.sh']], function(stdout)
         -- Trim any trailing newlines or spaces
         local trimmed_output = stdout:gsub("^%s*(.-)%s*$", "%1")
         -- Update the data_textbox with the correct font and color
@@ -319,7 +323,7 @@ gears.timer {
     download_textbox:set_markup('<span font="Vazirmatn 11" foreground="#FFDAF7">...</span>')
     local download_widget = wibox.container.margin(download_textbox, 5, 5, 5, 5)
     local function update_download()
-    awful.spawn.easy_async([[bash -c "~/D/setup/linux/xfce/download-meter-raw.sh"]], function(stdout)
+    awful.spawn.easy_async([[bash -c '/home/b/.config/awesome/script/download-meter-raw.sh']], function(stdout)
         local trimmed_output = stdout:gsub("^%s*(.-)%s*$", "%1")
         -- Update the data_textbox with the correct font and color
         download_textbox:set_markup(string.format('<span font="Vazirmatn 10" foreground="#FFDAF7">%s</span>', trimmed_output))
@@ -581,9 +585,14 @@ s.mytasklist = create_tasklist_widget(s)
 						arc_thickness = 2,
 						size=15,
 					}),
+
             mysystray_widget,
-            temprature_widget,
+
+            --temprature_widget,
             download_widget,
+            weather_widget({
+						city = "astaneh",
+					}),_,
             data_textbox,
             time_date_widget,
             --mytextclock,
@@ -1033,3 +1042,16 @@ client.connect_signal("property::urgent", function(c)
         c:jump_to()
     end
 end)
+
+
+-- Notifiction time out Chrome
+naughty.config.notify_callback = function(args)
+    if args.app_name == "Google Chrome" then
+        args.preset = {
+			timeout = 3,
+		}
+    end
+    return args
+end
+
+
