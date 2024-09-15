@@ -4,6 +4,7 @@ local gears = require("gears")
 local json = require("json")
 local HOME = os.getenv('HOME')
 local log_file = "/tmp/weather_roojino.log"
+local naughty = require("naughty")
 
 local function create_weather_widget(user_args)
     local weather_widget = wibox.widget {
@@ -14,6 +15,8 @@ local function create_weather_widget(user_args)
         {
             id = "temp",
             widget = wibox.widget.textbox,
+            font = "Sans 11",
+
         },
         layout = wibox.layout.fixed.horizontal,
     }
@@ -40,6 +43,8 @@ local function create_weather_widget(user_args)
     }
 
     local function update_widget(widget, city)
+
+
         local command = "curl -s 'https://roojino.ir/w.php?city=" .. city .. "'"
         awful.spawn.easy_async_with_shell(command, function(stdout)
             if stdout and stdout ~= "" then
@@ -48,7 +53,7 @@ local function create_weather_widget(user_args)
                 local icon_code = weather_data.icon
                 local icon_name = icon_map[icon_code] or "unknown"
                 local icon_path = HOME .. "/.config/awesome/icons/weather/" .. icon_name .. ".png"
-                widget:get_children_by_id("temp")[1]:set_text(temp .. "°C")
+                widget:get_children_by_id("temp")[1]:set_markup_silently("<span foreground='#FFDAF7'>" .. temp .. "°C</span>")
                 widget:get_children_by_id("icon")[1]:set_image(icon_path)
 
                 -- Save to log file
@@ -87,6 +92,16 @@ local function create_weather_widget(user_args)
         autostart = true,
         callback = function() update_widget(weather_widget, city) end
     }
+
+    -- Add mouse click event to update the widget and show notification
+    weather_widget:buttons(
+        gears.table.join(
+            awful.button({}, 1, function() update_widget(weather_widget, city)
+            -- Show notification that the widget is updating
+			naughty.notify({ text = "Updating weather...",timeout = 1, })
+            end)
+        )
+    )
 
     return weather_widget
 end

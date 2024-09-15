@@ -18,11 +18,12 @@ theme.font          = "Sans 10"
 theme.menu_font = "Sans 15"
 theme.taglist_icon_size = 20
 
-theme.bg_normal     = "#222222"
+--theme.bg_normal     = "#222222"
+theme.bg_normal     = "#290031"
 theme.bg_focus      = "#50003E"
 theme.bg_urgent     = main_color_saturated
 theme.bg_minimize   = "#444444"
-theme.bg_systray    = theme.bg_normal
+theme.bg_systray    = "#290031"
 
 theme.fg_normal     = "#aaaaaa"
 theme.fg_focus      = "#ffffff"
@@ -59,7 +60,17 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 
 -- Variables set for theming notifications:
 -- notification_font
--- notification_[bg|fg]
+-- notification_[bg|fg] "#290031"
+theme.notification_bg = "#290031cf"
+theme.notification_fg = "#FFDAF7"
+theme.notification_border_color = "#290031"
+theme.notification_border_width = 4
+
+--theme.notification_shape =  function(cr, width, height)
+--       gears.shape.rounded_rect(cr, width, height, 25)
+--    end
+
+
 -- notification_[width|height|margin]
 -- notification_[border_color|border_width|shape|opacity]
 

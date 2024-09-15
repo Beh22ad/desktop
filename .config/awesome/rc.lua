@@ -24,6 +24,7 @@ local has_fdo, freedesktop = pcall(require, "freedesktop")
 local home = os.getenv("HOME")
 --local downloadMeter = home .. '/.config/awesome/script/download-meter-raw.sh'
 --local Fadate = home .. "/.config/awesome/script/full-data.sh"
+
 local batteryarc_widget = require("batteryarc")
 local logout_menu_widget = require("logout-menu")
 local weather_widget = require("weather")
@@ -271,7 +272,24 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
  awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
-
+-- Create the SVG icon widget for start menu
+local svg_icon_widget0 = wibox.widget {
+    {
+        image = home .. "/.config/awesome/icons/wibar/start.svg",
+        resize = true,
+        forced_width = 25,
+        forced_height = 25,
+        widget = wibox.widget.imagebox,
+    },
+    widget = wibox.container.margin, -- Add margins if needed
+}
+local svg_icon_widget = wibox.container.margin(svg_icon_widget0, 5, 5, 2, 2)
+-- Set up the click event to run jgmenu_run
+svg_icon_widget:buttons(awful.util.table.join(
+    awful.button({}, 1, function()
+        awful.spawn.with_shell("jgmenu_run")
+    end)
+))
 
 
 -- Farsi date
@@ -400,10 +418,10 @@ time_widget:connect_signal("button::press", function()
         text = date_text,
         timeout = 5,
         position = "top_right",
-        margin = 10,
-        width = 200,
-        height = 70,
-        font = "Sans Bold 12",
+      --  margin = 10,
+       width = 200,
+     -- height = 60,
+        font = "Sans Bold 11",
     }
 end)
 
@@ -544,10 +562,11 @@ end
 
 
 -- systray
+--beautiful.systray_icon_spacing = 5
 mysystray = wibox.widget.systray()
 mysystray:set_base_size(18)
 local mysystray_widget = wibox.container.margin(mysystray, 5, 2, 5, 0)
-
+--local mysystray_widget = wibox.container.margin(mysystray, 5, 0, 3.5, 8)
 
 
 
@@ -557,23 +576,24 @@ local mysystray_widget = wibox.container.margin(mysystray, 5, 2, 5, 0)
 s.mytasklist = create_tasklist_widget(s)
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    s.mywibox = awful.wibar({ position = "top", screen = s , bg = "#290031" })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
+
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
           --  mylauncher,
-
+			svg_icon_widget,
             s.mytaglist,
            _,centered_layoutbox, _,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
 
+		{
             { -- Keyboard layout widget container
 				layout = wibox.layout.fixed.vertical,
 			--	mykeyboardlayout,
@@ -600,9 +620,14 @@ s.mytasklist = create_tasklist_widget(s)
             logout_menu_widget{
             font = 'Play 14',
             onlock = function() awful.spawn.with_shell('i3lock-fancy') end
-        }
-
         },
+        layout = wibox.layout.fixed.horizontal,
+       },
+
+       widget = wibox.container.background,
+    bg     = "#290031",
+    shape  = gears.shape.rounded_bar
+        }
     }
 end)
 -- }}}
@@ -1020,7 +1045,6 @@ end)
 
 
 -- fix mpv on top
-
 client.connect_signal("property::fullscreen", function(c)
     if c.class == "mpv" then
         if c.fullscreen then
@@ -1044,14 +1068,5 @@ client.connect_signal("property::urgent", function(c)
 end)
 
 
--- Notifiction time out Chrome
-naughty.config.notify_callback = function(args)
-    if args.app_name == "Google Chrome" then
-        args.preset = {
-			timeout = 3,
-		}
-    end
-    return args
-end
 
 

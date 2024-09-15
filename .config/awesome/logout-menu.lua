@@ -26,22 +26,27 @@ local logout_menu_widget = wibox.widget {
         layout = wibox.container.margin
     },
     shape = function(cr, width, height)
-    gears.shape.rounded_rect(cr, width, height, 4)
+    gears.shape.rounded_rect(cr, width, height, 0)
     end,
     widget = wibox.container.background,
+ --   bg='#AF000E'
 }
 
 local popup = awful.popup {
     ontop = true,
     visible = false,
     shape = function(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, 4)
+        gears.shape.rounded_rect(cr, width, height, 10)
     end,
-    border_width = 1,
-    border_color = beautiful.bg_focus,
+
+    border_width = 4,
+--    border_color = beautiful.bg_focus,
+    border_color = "#290031",
     maximum_width = 400,
     offset = { y = 5 },
-    widget = {}
+    widget = {
+    }
+
 }
 
 local function worker(user_args)
@@ -67,46 +72,57 @@ local function worker(user_args)
 
     for _, item in ipairs(menu_items) do
 
-        local row = wibox.widget {
+        local icon = wibox.widget {
+            image = ICON_DIR .. item.icon_name,
+            resize = false,
+            widget = wibox.widget.imagebox
+        }
+
+        local text = wibox.widget {
+            text = item.name,
+            font = font,
+            widget = wibox.widget.textbox
+        }
+
+        local inner_row = wibox.widget {
             {
                 {
-                    {
-                        image = ICON_DIR .. item.icon_name,
-                        resize = false,
-                        widget = wibox.widget.imagebox
-                    },
-                    {
-                        text = item.name,
-                        font = font,
-                        widget = wibox.widget.textbox
-                    },
-                    spacing = 12,
-                    layout = wibox.layout.fixed.horizontal
+                    icon,
+                    valign = 'center', -- Center the icon vertically
+                    widget = wibox.container.place,
                 },
-                margins = 8,
-                layout = wibox.container.margin
+                text,
+                spacing = 12,
+                layout = wibox.layout.fixed.horizontal
             },
+            margins = 8,
+            layout = wibox.container.margin
+        }
+
+        local row = wibox.widget {
+            inner_row,
             bg = beautiful.bg_normal,
             widget = wibox.container.background
         }
 
-        row:connect_signal("mouse::enter", function(c) c:set_bg(beautiful.bg_focus) end)
-        row:connect_signal("mouse::leave", function(c) c:set_bg(beautiful.bg_normal) end)
+        -- Connect the signals to the inner_row widget
+        inner_row:connect_signal("mouse::enter", function(c) row.bg = beautiful.bg_focus end)
+        inner_row:connect_signal("mouse::leave", function(c) row.bg = beautiful.bg_normal end)
 
         local old_cursor, old_wibox
-        row:connect_signal("mouse::enter", function()
+        inner_row:connect_signal("mouse::enter", function()
             local wb = mouse.current_wibox
             old_cursor, old_wibox = wb.cursor, wb
             wb.cursor = "hand1"
         end)
-        row:connect_signal("mouse::leave", function()
+        inner_row:connect_signal("mouse::leave", function()
             if old_wibox then
                 old_wibox.cursor = old_cursor
                 old_wibox = nil
             end
         end)
 
-        row:buttons(awful.util.table.join(awful.button({}, 1, function()
+        inner_row:buttons(awful.util.table.join(awful.button({}, 1, function()
             popup.visible = not popup.visible
             item.command()
         end)))
@@ -121,6 +137,7 @@ local function worker(user_args)
                         if popup.visible then
                             popup.visible = not popup.visible
                             logout_menu_widget:set_bg('#00000000')
+                          --  logout_menu_widget:set_bg('#AF000E')
                         else
                             popup:move_next_to(mouse.current_widget_geometry)
                             logout_menu_widget:set_bg(beautiful.bg_focus)
@@ -132,5 +149,6 @@ local function worker(user_args)
     return logout_menu_widget
 
 end
+
 
 return worker
