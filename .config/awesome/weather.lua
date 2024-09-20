@@ -52,16 +52,17 @@ local function create_weather_widget(user_args)
                 local temp = weather_data.temp
                 local icon_code = weather_data.icon
                 local icon_name = icon_map[icon_code] or "unknown"
-                local icon_path = HOME .. "/.config/awesome/icons/weather/" .. icon_name .. ".png"
+                local icon_path = HOME .. "/.config/awesome/icons/weather/" .. icon_name .. ".svg"
                 widget:get_children_by_id("temp")[1]:set_markup_silently("<span foreground='#FFDAF7'>" .. temp .. "°C</span>")
                 widget:get_children_by_id("icon")[1]:set_image(icon_path)
-
-                -- Save to log file
-                local file = io.open(log_file, "w")
-                if file then
-                    file:write(stdout)
-                    file:close()
-                end
+				if temp ~= "" then
+					-- Save to log file
+					local file = io.open(log_file, "w")
+					if file then
+						file:write(stdout)
+						file:close()
+					end
+				end
             else
                 -- Read from log file if API call fails
                 local file = io.open(log_file, "r")

@@ -188,8 +188,6 @@ local function update_keyboard_layout()
 	else
 		 mykeyboardlayout.widget:set_markup('<span font="sans bold 12" color="' .. color .. '">🇺🇸</span>')
 	end
---	 naughty.notify({ title = "Unexpected Layout", text = "|"..layout.."|", timeout = 0 })
- --   mykeyboardlayout.widget:set_markup('<span font="sans bold 12" color="' .. color .. '">' .. layout .. '</span>')
 
 end
 
@@ -198,14 +196,13 @@ mykeyboardlayout:connect_signal("widget::redraw_needed", function()
     update_keyboard_layout()
 end)
 
+keyboard_box:connect_signal("button::press", function()
+    mykeyboardlayout:next_layout ()
+end)
+
 -- Initial update
 update_keyboard_layout()
 
-
-
--- {{{ Wibar
--- Create a textclock widget
--- mytextclock = wibox.widget.textclock()
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -277,13 +274,13 @@ local svg_icon_widget0 = wibox.widget {
     {
         image = home .. "/.config/awesome/icons/wibar/start.svg",
         resize = true,
-        forced_width = 25,
-        forced_height = 25,
+        forced_width = 20,
+        forced_height = 20,
         widget = wibox.widget.imagebox,
     },
     widget = wibox.container.margin, -- Add margins if needed
 }
-local svg_icon_widget = wibox.container.margin(svg_icon_widget0, 5, 5, 2, 2)
+local svg_icon_widget = wibox.container.margin(svg_icon_widget0, 5, 5, 5, 5)
 -- Set up the click event to run jgmenu_run
 svg_icon_widget:buttons(awful.util.table.join(
     awful.button({}, 1, function()
@@ -574,6 +571,9 @@ local mysystray_widget = wibox.container.margin(mysystray, 5, 2, 5, 0)
 
 -- Use this function to create the tasklist for each screen
 s.mytasklist = create_tasklist_widget(s)
+
+
+
 
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s , bg = "#290031" })
