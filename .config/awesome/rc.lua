@@ -29,24 +29,6 @@ local batteryarc_widget = require("batteryarc")
 local logout_menu_widget = require("logout-menu")
 local weather_widget = require("weather")
 
-----------------------------------------------------------------
--- change color of each tag
---local original_taglist_label = awful.widget.taglist.taglist_label
---local tag_colors_b = { "#3a3f50", "#3a3a50", "#3f3a50", "#453a50",
---  "#4b3b51", "#4a3a50", "#503a50", "#503a4a", "#503a45" }
---local tag_colors_s = { "#606a85", "#606085", "#6a6085", "#736085",
---  "#7b6085", "#7c6085", "#856085", "#85607c", "#856073" }
---function awful.widget.taglist.taglist_label(tag, args, tb)
---  local idx = (tag.index - 1) % #tag_colors_b + 1
---  local args = {bg_focus = tag_colors_s[idx]}
---  local text, bg, bg_image, icon, other_args =
---    original_taglist_label(tag, args, tb)
---  if bg == nil then
---    bg = tag_colors_b[idx]
---  end
---  return text, bg, bg_image, icon, other_args
---end
---------------------------------------------------------------------
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -72,6 +54,22 @@ do
 end
 -- }}}
 
+local function rounded_shape(radius)
+    return function(cr, width, height)
+        gears.shape.rounded_rect(cr, width, height, radius)
+    end
+end
+
+naughty.config.presets.normal = {
+    position = "bottom_right", -- 'top_right',
+    ontop = true,
+    margin = 10,
+   border_width = 2,
+    timeout = 3,
+  --  width = 200,
+    font = "Sans Bold 11",
+    shape = rounded_shape(10),
+}
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init("~/.config/awesome/theme.lua")
@@ -368,7 +366,7 @@ date_widget.markup = '<span color="#FFDAF7" font="Bold 12">Date</span>'
 
 -- Create a function to update time
 local function update_time()
-    local time_text = os.date("%H:%M")
+    local time_text = os.date("%I:%M %p")
     time_widget.markup = '<span color="#FFDAF7" font="10">' .. time_text .. '</span>'
 end
 
@@ -414,11 +412,8 @@ time_widget:connect_signal("button::press", function()
     naughty.notify {
         text = date_text,
         timeout = 5,
-        position = "top_right",
-      --  margin = 10,
-       width = 200,
-     -- height = 60,
-        font = "Sans Bold 11",
+        preset = naughty.config.presets.normal,
+
     }
 end)
 
@@ -575,7 +570,7 @@ s.mytasklist = create_tasklist_widget(s)
 
 
 
-    -- Create the wibox
+    -- Create the wibox "bottom"
     s.mywibox = awful.wibar({ position = "top", screen = s , bg = "#290031" })
 
     -- Add widgets to the wibox
@@ -601,6 +596,7 @@ s.mytasklist = create_tasklist_widget(s)
 			},
 			batteryarc_widget({
 						show_notification_mode = "on_click",
+					--	notification_position = "bottom_right",
 						show_current_level = true,
 						arc_thickness = 2,
 						size=15,
@@ -611,10 +607,10 @@ s.mytasklist = create_tasklist_widget(s)
             --temprature_widget,
             download_widget,
             weather_widget({
-						city = "astaneh",
+						city = "tehran",
 					}),_,
             data_textbox,
-            time_date_widget,
+            _,time_date_widget,
             --mytextclock,
 
             logout_menu_widget{
@@ -739,7 +735,9 @@ globalkeys = gears.table.join(
 	  awful.key({ modkey },            "Up",     function () awful.util.spawn_with_shell("amixer set Master 5%+") end,{description = "Volume+", group = "client"}),
 	   awful.key({ modkey },            "Down",     function () awful.util.spawn_with_shell("amixer set Master 5%-") end,{description = "Volume-", group = "client"}),
 
-	   awful.key( {}, "Scroll_Lock",     function () awful.util.spawn_with_shell("xbacklight -set 30") end,{description = "brightness up ", group = "client"}),
+	   awful.key( {"Control"}, "Scroll_Lock",     function () awful.util.spawn_with_shell("xbacklight -set 50") end,{description = "brightness 50% ", group = "client"}),
+
+	   awful.key( {}, "Scroll_Lock",     function () awful.util.spawn_with_shell("xbacklight -set 30") end,{description = "brightness 30 ", group = "client"}),
 
 	   awful.key({ modkey },            "Scroll_Lock",     function () awful.util.spawn_with_shell("xbacklight -set 0") end,{description = "brightness off", group = "client"}),
 
@@ -955,10 +953,30 @@ awful.rules.rules = {
        properties = { screen = 1, tag = "2" } },
      { rule = { class = "Google-chrome" },
        properties = { screen = 1, tag = "1" } },
+
      { rule = { class = "Geany" },
        properties = { screen = 1, tag = "3" } },
        { rule = { class = "Pavucontrol" },
        properties = { screen = 1, tag = "9" } },
+       -- move mpv to active tag
+       { rule = { class = "mpv" },
+      properties = {},
+      callback = function(c)
+        c:connect_signal("property::screen", function(c)
+          local t = awful.screen.focused().selected_tag
+          if t and c.first_tag ~= t then
+            c:move_to_tag(t)
+          end
+        end)
+
+        tag.connect_signal("property::selected", function(t)
+          if t.selected and c.first_tag ~= t then
+            c:move_to_tag(t)
+          end
+        end)
+      end
+    },
+    ---
 }
 -- }}}
 
@@ -1066,7 +1084,6 @@ client.connect_signal("property::urgent", function(c)
         c:jump_to()
     end
 end)
-
 
 
 
