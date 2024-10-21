@@ -962,17 +962,27 @@ awful.rules.rules = {
        { rule = { class = "mpv" },
       properties = {},
       callback = function(c)
-        c:connect_signal("property::screen", function(c)
-          local t = awful.screen.focused().selected_tag
-          if t and c.first_tag ~= t then
-            c:move_to_tag(t)
-          end
-        end)
+        local function move_to_focused_tag(c)
+            if c.valid then
+                local t = awful.screen.focused().selected_tag
+                if t and c.first_tag ~= t then
+                    c:move_to_tag(t)
+                end
+            end
+        end
 
-        tag.connect_signal("property::selected", function(t)
-          if t.selected and c.first_tag ~= t then
-            c:move_to_tag(t)
-          end
+        c:connect_signal("property::screen", move_to_focused_tag)
+
+        local tag_selected_signal = function(t)
+            if t.selected then
+                move_to_focused_tag(c)
+            end
+        end
+
+        tag.connect_signal("property::selected", tag_selected_signal)
+
+        c:connect_signal("unmanage", function()
+            tag.disconnect_signal("property::selected", tag_selected_signal)
         end)
       end
     },
