@@ -32,6 +32,8 @@ Audacity,~/D/setup/linux/audacity.AppImage,audacity
 HandBrake,~/D/setup/linux/HandBrake.AppImage,fr.handbrake.ghb
 Calculator,galculator,deepin-calculator
 Supertuxkart,~/D/setup/linux/Supertuxkart.AppImage,org.supertux.SuperTux-Milestone1
+Counter Strike,~/D/setup/linux/game/cs/CS\ Portable,lutris_counter-strike.svg
+
 #^sep()
 #Quick Screenshot+Upload,bl-image-upload,camera-photo
 #^sep()

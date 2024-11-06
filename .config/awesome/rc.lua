@@ -582,8 +582,10 @@ s.mytasklist = create_tasklist_widget(s)
           --  mylauncher,
 			svg_icon_widget,
             s.mytaglist,
+
            _,centered_layoutbox, _,
             s.mypromptbox,
+
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
