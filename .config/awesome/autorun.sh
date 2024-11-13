@@ -36,3 +36,5 @@ fi
 if ! pgrep -x "xfce4-power-manager" > /dev/null; then
     xfce4-power-manager &
 fi
+
+pavucontrol &
