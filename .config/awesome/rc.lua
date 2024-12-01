@@ -741,6 +741,11 @@ globalkeys = gears.table.join(
 
 	   awful.key( {}, "Scroll_Lock",     function () awful.util.spawn_with_shell("xbacklight -set 30") end,{description = "brightness 30 ", group = "client"}),
 
+	   awful.key({ modkey },            "a",     function () awful.util.spawn_with_shell("xbacklight -set 0") end,{description = "brightness off", group = "client"}),
+
+
+	   awful.key({ modkey },            "q",     function () awful.util.spawn_with_shell("xbacklight -set 30") end,{description = "brightness 30%", group = "client"}),
+
 	   awful.key({ modkey },            "Scroll_Lock",     function () awful.util.spawn_with_shell("xbacklight -set 0") end,{description = "brightness off", group = "client"}),
 
 	   awful.key({  },            "Print",     function () awful.util.spawn_with_shell("flameshot gui") end,{description = "Screen shot", group = "client"}),

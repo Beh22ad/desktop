@@ -38,3 +38,7 @@ if ! pgrep -x "xfce4-power-manager" > /dev/null; then
 fi
 
 pavucontrol &
+
+#bluetooh keyboard
+sleep 5
+~/.config/awesome/script/bluetooth-keyboard.sh

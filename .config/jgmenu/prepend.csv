@@ -20,6 +20,7 @@
 ^sep()
 Terminal,x-terminal-emulator,utilities-terminal
 Chrome,x-www-browser,com.google.Chrome
+Zen,~/D/setup/linux/zen/zen,firefox-mozilla-build.svg
 File Manager,bl-file-manager,system-file-manager
 Geany,geany,geany
 ^sep()
