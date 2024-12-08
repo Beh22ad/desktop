@@ -189,6 +189,38 @@ local function update_keyboard_layout()
 
 end
 
+
+-- Caps Lock disabling
+
+
+-- Function to disable Caps Lock
+local function disable_capslock()
+    awful.spawn.with_shell("xdotool key Caps_Lock")
+end
+
+-- Create a timer to check and disable Caps Lock every second
+local capslock_timer = gears.timer {
+    timeout = 1,  -- 1 second interval
+    call_now = true,
+    autostart = true,
+    callback = function()
+        -- Check if Caps Lock is on
+        awful.spawn.easy_async_with_shell(
+            "xset q | grep -q 'Caps Lock:   on'",
+            function(stdout, stderr, reason, exit_code)
+                if exit_code == 0 then
+                    -- If Caps Lock is on, disable it
+                    disable_capslock()
+                end
+            end
+        )
+    end
+}
+
+
+
+
+
 -- Connect the function to the signal that is triggered when the layout changes
 mykeyboardlayout:connect_signal("widget::redraw_needed", function()
     update_keyboard_layout()
@@ -754,6 +786,8 @@ globalkeys = gears.table.join(
 	   awful.key({ modkey },       "h"     ,     function () awful.util.spawn_with_shell("x-terminal-emulator -T 'htop task manager' -e htop") end,{description = "Htop", group = "client"}),
 	   awful.key({ modkey },       "Escape"     ,     function () awful.util.spawn_with_shell("systemctl suspend") end,{description = "sleep", group = "client"}),
 	   awful.key({ modkey },       "v"     ,     function () awful.util.spawn_with_shell("xfce4-clipman-history") end,{description = "Clip board", group = "client"}),
+
+	   awful.key({ modkey, "Control" }, "k", function() awful.spawn.with_shell("setxkbmap -option ctrl:nocaps") end, {description = "Remap Caps Lock to Ctrl", group = "custom"}),
 
 
 

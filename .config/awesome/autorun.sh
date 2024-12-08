@@ -6,7 +6,7 @@ fi
 
 syndaemon -i .5 -K -t -R -d &
 
-setxkbmap -option ctrl:nocaps
+
 setxkbmap -layout "us,ir" -option "grp:alt_shift_toggle" &
 
 if ! pgrep -x "nm-applet" > /dev/null; then
@@ -41,4 +41,7 @@ pavucontrol &
 
 #bluetooh keyboard
 sleep 5
-~/.config/awesome/script/bluetooth-keyboard.sh
+~/.config/awesome/script/bluetooth-keyboard.sh &
+
+#disable Caps Lock key
+setxkbmap -option ctrl:nocaps
