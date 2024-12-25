@@ -132,7 +132,9 @@ local Supertuxkart = { "Supertuxkart", function() awful.util.spawn_with_shell("~
 local Calculator = { "Calculator", function() awful.util.spawn_with_shell("galculator") end, home .. "/.icons/Papirus/32x32/apps/galculator.svg" }
 local Exit = { "Exit", "bl-exit", home .. "/.icons/Papirus/32x32/apps/deepin-crossover.svg" }
 
-
+-- AQI Widget شاخص آلودگی هوای تهران
+local tehran_aqi = require("tehran_aqi")
+local AQI = wibox.container.margin(tehran_aqi, 0, 0, 5, 5)
 --if has_fdo then
 --   mymainmenu = freedesktop.menu.build({
 --       before = { menu_awesome },
@@ -170,6 +172,7 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 local _ = wibox.container.margin()
 _:set_right(5)
 _:set_left(5)
+
 
 -- Keyboard map indicator and switcher
 local mykeyboardlayout = awful.widget.keyboardlayout()
@@ -640,6 +643,7 @@ s.mytasklist = create_tasklist_widget(s)
 
             --temprature_widget,
             download_widget,
+            AQI,
             weather_widget({
 						city = "tehran",
 					}),_,
