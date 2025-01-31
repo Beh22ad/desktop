@@ -1,4 +1,9 @@
-//@theme "/usr/share/rofi/themes/DarkBlue.rasi"
-//@theme "/usr/share/rofi/themes/docu.rasi"
-//@theme "/usr/share/rofi/themes/gruvbox-common.rasi"
-@theme "~/.config/rofi/DarkBlue.rasi"
+
+@theme "~/.config/rofi/themes/launchpad.rasi"
+configuration {
+    disable-history: false;
+    modi: [window,run,ssh,drun];
+    drun-display-format: "{icon} {name}";   // Add this line
+    show-icons: true;                       // Add this line
+    icon-theme: "Papirus-Light";                  // Move this here
+}

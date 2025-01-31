@@ -35,8 +35,8 @@ local aqi_widget = wibox.widget {
         margins = 4,
         widget = wibox.container.margin
     },
-    bg = "#ffffff",
-    fg = "#000000",
+    bg = beautiful.bg_normal,
+    fg = beautiful.notification_fg,
     widget = wibox.container.background
 }
 
@@ -47,8 +47,8 @@ local function update_widget_style(value)
         bg = "#4CAF50"  -- Green
         fg = "#ffffff"
     elseif value < 100 then
-        bg = "#ffffff"  -- White
-        fg = "#000000"
+        bg = beautiful.bg_normal
+        fg = beautiful.notification_fg
     elseif value < 120 then
         bg = "#FF9800"  -- Orange
         fg = "#ffffff"
@@ -131,8 +131,8 @@ local function set_aqi_value(value)
         save_to_cache(value)
     else
         debug_notify("Widget Update", "Setting AQI to N/A")
-        aqi_widget:get_children_by_id("txt")[1]:set_text(" AQI: N/A ")
-        aqi_widget.bg = "#9E9E9E"
+        aqi_widget:get_children_by_id("txt")[1]:set_text(" AQI ")
+        aqi_widget.bg = beautiful.bg_normal
         aqi_widget.fg = "#ffffff"
     end
 end

@@ -1,7 +1,9 @@
 #!/bin/bash
 
+pkill picom
 if ! pgrep -x "picom" > /dev/null; then
     picom --config ~/.config/picom.conf &
+  #  picom --config ~/.config/picom-FT-Labs.conf &
 fi
 
 syndaemon -i .5 -K -t -R -d &

@@ -3,6 +3,10 @@
  * User: Qball
  * Copyright: Dave Davenport
  */
+ configuration {
+    show-icons:   false;
+    sidebar-mode: false;
+}
 
 * {
     selected-normal-foreground:  rgba ( 2, 20, 63, 100 % );

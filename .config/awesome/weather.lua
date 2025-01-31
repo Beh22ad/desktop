@@ -5,6 +5,7 @@ local json = require("json")
 local HOME = os.getenv('HOME')
 local log_file = "/tmp/weather_roojino.log"
 local naughty = require("naughty")
+local beautiful = require("beautiful")
 
 local function create_weather_widget(user_args)
     local weather_widget = wibox.widget {
@@ -53,7 +54,7 @@ local function create_weather_widget(user_args)
                 local icon_code = weather_data.icon
                 local icon_name = icon_map[icon_code] or "unknown"
                 local icon_path = HOME .. "/.config/awesome/icons/weather/" .. icon_name .. ".svg"
-                widget:get_children_by_id("temp")[1]:set_markup_silently("<span foreground='#FFDAF7'>" .. temp .. "°C</span>")
+                widget:get_children_by_id("temp")[1]:set_markup_silently("<span foreground='"..beautiful.notification_fg.."'>" .. temp .. "°C</span>")
                 widget:get_children_by_id("icon")[1]:set_image(icon_path)
 				if temp ~= "" then
 					-- Save to log file

@@ -1,0 +1,45 @@
+configuration {
+    show-icons:   false;
+    sidebar-mode: false;
+}
+
+* {
+    background-color: transparent;
+    text-color:       white;
+    spacing:          30;
+}
+
+#window {
+    font: "System San Francisco Display 18";
+    fullscreen: true;
+    transparency: "background";
+    background-color: #282c34d0;
+
+    // Add dummy widgets on top and bottom so the sizing
+    // nicely centers hdum, independent of resolution.
+   // children: [ dummy1, hdum, dummy2 ];
+}
+
+#hdum {
+    orientation: horizontal;
+    // Add dummy widgets on left and right so the sizing
+    // nicely centers mainbox, independent of resolution.
+    children: [ dummy3, mainbox, dummy4 ];
+}
+
+#element selected {
+    text-color: #9575cd;
+}
+
+element {
+    /* Increase the icon size */
+    icon-size: 1.5em;        /* Adjust this value as needed */
+
+    /* Add some padding if needed */
+    padding: 8px;          /* Optional: adjust spacing around the elements */
+}
+
+element-icon {
+    size: 1.5em;            /* This should match the icon-size above */
+    padding: 0px 10px 0px 0px;  /* Spacing between icon and text */
+}

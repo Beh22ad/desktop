@@ -67,7 +67,7 @@ naughty.config.presets.normal = {
    border_width = 2,
     timeout = 3,
   --  width = 200,
-    font = "Sans Bold 11",
+    font = "Sans Bold 13",
     shape = rounded_shape(10),
 }
 -- {{{ Variable definitions
@@ -78,7 +78,7 @@ beautiful.init("~/.config/awesome/theme.lua")
 awful.spawn.with_shell("~/.config/awesome/autorun.sh")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "x-terminal-emulator -e fish" -- "x-terminal-emulator"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -132,41 +132,36 @@ local Supertuxkart = { "Supertuxkart", function() awful.util.spawn_with_shell("~
 local Calculator = { "Calculator", function() awful.util.spawn_with_shell("galculator") end, home .. "/.icons/Papirus/32x32/apps/galculator.svg" }
 local Exit = { "Exit", "bl-exit", home .. "/.icons/Papirus/32x32/apps/deepin-crossover.svg" }
 
--- AQI Widget شاخص آلودگی هوای تهران
-local tehran_aqi = require("tehran_aqi")
-local AQI = wibox.container.margin(tehran_aqi, 0, 0, 5, 5)
---if has_fdo then
---   mymainmenu = freedesktop.menu.build({
---       before = { menu_awesome },
---        after =  { menu_terminal }
---    })
---else
-    mymainmenu = awful.menu({
-        items = {
-                  menu_awesome,
-                  LosslessCut,
-                  Inkscape,
-                  Gimp,
-                  Krita,
-                  kdenlive,
-                  HandBrake,
-                  Calculator,
-                  Supertuxkart,
-                  { "Debian", debian.menu.Debian_menu.Debian },
+mymainmenu = awful.menu({
+	items = {
+			  menu_awesome,
+			  LosslessCut,
+			  Inkscape,
+			  Gimp,
+			  Krita,
+			  kdenlive,
+			  HandBrake,
+			  Calculator,
+			  Supertuxkart,
+			  { "Debian", debian.menu.Debian_menu.Debian },
 
-                 menu_terminal,
-                 Exit,
-                }
-    })
---end
-
-
+			 menu_terminal,
+			 Exit,
+			}
+})
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
+
+-- AQI Widget شاخص آلودگی هوای تهران
+local tehran_aqi = require("tehran_aqi")
+local AQI = wibox.container.margin(tehran_aqi, 0, 3, 5, 5)
+
+
+
 
 -- spacer
 local _ = wibox.container.margin()
@@ -182,9 +177,9 @@ keyboard_box:set_left(10)
 keyboard_box:set_right(5)
 local function update_keyboard_layout()
     local layout = mykeyboardlayout.widget.text
-    local color = "#FFDAF7"
+    local color = beautiful.bg_normal
     if layout == " ir " or layout == "🇮🇷" then
-        color = "#00FF00"  -- Green for "ir"
+        color = beautiful.bg_minimize  -- Green for "ir"
         mykeyboardlayout.widget:set_markup('<span font="sans bold 12" color="' .. color .. '">🇮🇷</span>')
 	else
 		 mykeyboardlayout.widget:set_markup('<span font="sans bold 12" color="' .. color .. '">🇺🇸</span>')
@@ -192,8 +187,17 @@ local function update_keyboard_layout()
 
 end
 
+-- Connect the function to the signal that is triggered when the layout changes
+mykeyboardlayout:connect_signal("widget::redraw_needed", function()
+    update_keyboard_layout()
+end)
 
--- Caps Lock disabling
+keyboard_box:connect_signal("button::press", function()
+    mykeyboardlayout:next_layout ()
+end)
+
+-- Initial update
+update_keyboard_layout()
 
 
 -- Function to disable Caps Lock
@@ -221,22 +225,6 @@ local capslock_timer = gears.timer {
 }
 
 
-
-
-
--- Connect the function to the signal that is triggered when the layout changes
-mykeyboardlayout:connect_signal("widget::redraw_needed", function()
-    update_keyboard_layout()
-end)
-
-keyboard_box:connect_signal("button::press", function()
-    mykeyboardlayout:next_layout ()
-end)
-
--- Initial update
-update_keyboard_layout()
-
-
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -250,9 +238,9 @@ local taglist_buttons = gears.table.join(
                                               if client.focus then
                                                   client.focus:toggle_tag(t)
                                               end
-                                          end),
-                    awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-                    awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
+                                          end)
+                 --  awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
+                 --  awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
                 )
 
 local tasklist_buttons = gears.table.join(
@@ -317,21 +305,22 @@ local svg_icon_widget = wibox.container.margin(svg_icon_widget0, 5, 5, 5, 5)
 -- Set up the click event to run jgmenu_run
 svg_icon_widget:buttons(awful.util.table.join(
     awful.button({}, 1, function()
-        awful.spawn.with_shell("jgmenu_run")
+        --awful.spawn.with_shell("jgmenu_run")
+        awful.spawn.with_shell("rofi -show drun")
     end)
 ))
 
 
 -- Farsi date
 local data_textbox = wibox.widget.textbox()
-data_textbox:set_markup('<span font="Vazirmatn 10" foreground="#FFDAF7">...</span>')
+data_textbox:set_markup('<span font="Vazirmatn 10" foreground="'..beautiful.notification_fg..'">...</span>')
 
 local function update_data()
     awful.spawn.easy_async([[bash -c '/home/b/.config/awesome/script/full-data.sh']], function(stdout)
         -- Trim any trailing newlines or spaces
         local trimmed_output = stdout:gsub("^%s*(.-)%s*$", "%1")
         -- Update the data_textbox with the correct font and color
-        data_textbox:set_markup(string.format('<span font="Vazirmatn 10" foreground="#FFDAF7">%s</span>', trimmed_output))
+        data_textbox:set_markup(string.format('<span font="Vazirmatn 10" foreground="'..beautiful.notification_fg..'">%s</span>', trimmed_output))
     end)
 end
 
@@ -346,35 +335,15 @@ gears.timer {
 
 
 
-
--- Tehran themprature
-    local temprature_textbox = wibox.widget.textbox()
-    temprature_textbox:set_markup('<span font="Vazirmatn 10" foreground="#98FB98">...</span>')
-    local temprature_widget = wibox.container.margin(temprature_textbox, 5, 5, 5, 5)
-    local function update_temprature()
-    awful.spawn.easy_async([[bash -c "~/D/setup/linux/xfce/weather-fa2.sh "]], function(stdout)
-		local trimmed_output = stdout:gsub("^%s*(.-)%s*$", "%1")
-        -- Update the data_textbox with the correct font and color
-        temprature_textbox:set_markup(string.format('<span font="Vazirmatn 11" foreground="#FFDAF7">%s</span>', trimmed_output))
-		end)
-	end
-	update_temprature()
-	gears.timer {
-		timeout   = 300,
-		call_now  = true,
-		autostart = true,
-		callback  = update_temprature
-	}
-
 -- download data meter
     local download_textbox = wibox.widget.textbox()
-    download_textbox:set_markup('<span font="Vazirmatn 11" foreground="#FFDAF7">...</span>')
+    download_textbox:set_markup('<span font="Vazirmatn 11" foreground="'..beautiful.notification_fg..'">...</span>')
     local download_widget = wibox.container.margin(download_textbox, 5, 5, 5, 5)
     local function update_download()
     awful.spawn.easy_async([[bash -c '/home/b/.config/awesome/script/download-meter-raw.sh']], function(stdout)
         local trimmed_output = stdout:gsub("^%s*(.-)%s*$", "%1")
         -- Update the data_textbox with the correct font and color
-        download_textbox:set_markup(string.format('<span font="Vazirmatn 10" foreground="#FFDAF7">%s</span>', trimmed_output))
+        download_textbox:set_markup(string.format('<span font="Vazirmatn 10" foreground="'..beautiful.notification_fg..'">%s</span>', trimmed_output))
 		end)
 	end
 	update_download()
@@ -394,21 +363,21 @@ date_widget.visible = false
 
 -- Set initial styling
 --time_widget.font = 10
-time_widget.markup = '<span color="#FFDAF7" font="10">Time</span>'
+time_widget.markup = '<span color="'..beautiful.notification_fg..'" font="10">Time</span>'
 
 --date_widget.font =10
-date_widget.markup = '<span color="#FFDAF7" font="Bold 12">Date</span>'
+date_widget.markup = '<span color="'..beautiful.notification_fg..'" font="Bold 12">Date</span>'
 
 -- Create a function to update time
 local function update_time()
     local time_text = os.date("%I:%M %p")
-    time_widget.markup = '<span color="#FFDAF7" font="10">' .. time_text .. '</span>'
+    time_widget.markup = '<span color="'..beautiful.notification_fg..'" font="10">' .. time_text .. '</span>'
 end
 
 -- Create a function to update date
 local function update_date()
     local date_text = os.date(" %B \n %Y/%m/%d ")
-    date_widget.markup = '<span color="#FFDAF7" font="Bold 12">' .. date_text .. '</span>'
+    date_widget.markup = '<span color="'..beautiful.notification_fg..'" font="Bold 12">' .. date_text .. '</span>'
 end
 
 -- Timer to update time every minute
@@ -534,8 +503,23 @@ local function create_tasklist_widget(s)
         awful.button({ }, 2, function(c)
             c:kill()
         end),
-        awful.button({ }, 3, function()
-            awful.menu.client_list({ theme = { width = 250 } })
+        awful.button({ }, 3, function(c)
+            -- Create a custom menu for right-click
+            if not c._right_click_menu then
+                c._right_click_menu = awful.menu({
+                    items = {
+                        { "Toggle Floating", function() c.floating = not c.floating end },
+                        { "Close", function() c:kill() end }
+                    }
+                })
+            end
+
+            -- Hide the menu if it's already visible
+            if c._right_click_menu.visible then
+                c._right_click_menu:hide()
+            else
+                c._right_click_menu:show()
+            end
         end),
         awful.button({ }, 4, function ()
             awful.client.focus.byidx(1)
@@ -544,7 +528,6 @@ local function create_tasklist_widget(s)
             awful.client.focus.byidx(-1)
         end)
     )
-
     return awful.widget.tasklist {
         screen = s,
         filter = awful.widget.tasklist.filter.currenttags,
@@ -606,7 +589,7 @@ s.mytasklist = create_tasklist_widget(s)
 
 
     -- Create the wibox "bottom"
-    s.mywibox = awful.wibar({ position = "top", screen = s , bg = "#290031" })
+    s.mywibox = awful.wibar({ position = "top", screen = s , bg = beautiful.bg_normal })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
@@ -659,7 +642,7 @@ s.mytasklist = create_tasklist_widget(s)
        },
 
        widget = wibox.container.background,
-    bg     = "#290031",
+    bg     = beautiful.bg_normal,
     shape  = gears.shape.rounded_bar
         }
     }
@@ -668,9 +651,11 @@ end)
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
-    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev)
+    --awful.button({ }, 3, function () awful.util.spawn_with_shell("jgmenu_run") end)
+    awful.button({ }, 3, function () awful.util.spawn_with_shell("rofi -show drun") end)
+--    awful.button({ }, 3, function () mymainmenu:toggle() end),
+--    awful.button({ }, 4, awful.tag.viewnext),
+--    awful.button({ }, 5, awful.tag.viewprev)
 ))
 
 
@@ -767,7 +752,7 @@ globalkeys = gears.table.join(
               {description = "Chrome", group = "launcher"}),
      awful.key({ modkey },            "g",     function () awful.util.spawn("geany") end,
               {description = "geany", group = "launcher"}),
-     awful.key({ modkey },            ".",     function () awful.util.spawn_with_shell("~/.local/bin/rofimoji --hidden-descriptions") end,
+     awful.key({ modkey },            ".",     function () awful.util.spawn_with_shell("~/.local/bin/rofimoji --hidden-descriptions --selector-args='-theme ~/.config/rofi/themes/moji.rasi'") end,
               {description = "rofimoji", group = "launcher"}),
 
 	  awful.key({ modkey },            "Up",     function () awful.util.spawn_with_shell("amixer set Master 5%+") end,{description = "Volume+", group = "client"}),
@@ -786,7 +771,8 @@ globalkeys = gears.table.join(
 
 	   awful.key({  },            "Print",     function () awful.util.spawn_with_shell("flameshot gui") end,{description = "Screen shot", group = "client"}),
 
-	   awful.key({ modkey },     " "    ,     function () awful.util.spawn_with_shell("jgmenu_run") end,{description = "Menu", group = "client"}),
+	   --awful.key({ modkey },     " "    ,     function () awful.util.spawn_with_shell("jgmenu_run") end,{description = "Menu", group = "client"}),
+	   awful.key({ modkey },     " "    ,     function () awful.util.spawn_with_shell("rofi -show drun") end,{description = "Menu", group = "client"}),
 	   awful.key({ modkey },       "h"     ,     function () awful.util.spawn_with_shell("x-terminal-emulator -T 'htop task manager' -e htop") end,{description = "Htop", group = "client"}),
 	   awful.key({ modkey },       "Escape"     ,     function () awful.util.spawn_with_shell("systemctl suspend") end,{description = "sleep", group = "client"}),
 	   awful.key({ modkey },       "v"     ,     function () awful.util.spawn_with_shell("xfce4-clipman-history") end,{description = "Clip board", group = "client"}),
@@ -964,6 +950,7 @@ awful.rules.rules = {
           "Lxappearance",
           "Pavucontrol",
           "mother.py",
+          "oblivion-desktop",
           "Uget-gtk",
           "Xfce4-clipman-history",
           "Blueman-manager",
@@ -987,6 +974,12 @@ awful.rules.rules = {
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
       }, properties = { floating = true }},
+       { rule = { class = "qView" },
+        properties = { floating = true, maximized = true },
+		},
+		{ rule = { class = "Pavucontrol" },
+        properties = { minimized = true },
+		},
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
@@ -1005,7 +998,9 @@ awful.rules.rules = {
        properties = { screen = 1, tag = "9" } },
        -- move mpv to active tag
        { rule = { class = "mpv" },
-      properties = {},
+      properties = {
+      border_width = 0,
+      },
       callback = function(c)
         local function move_to_focused_tag(c)
             if c.valid then
@@ -1097,21 +1092,28 @@ client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = false})
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus;  end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal;  end)
 -- }}}
 
 
 -- border for active windows only
 
-beautiful.gap_single_client   = false
-screen.connect_signal("arrange", function (s)
+beautiful.gap_single_client = false
+
+screen.connect_signal("arrange", function(s)
     local only_one = #s.tiled_clients == 1
+
     for _, c in pairs(s.clients) do
-        if only_one and not c.floating or c.maximized then
+        -- Check for single window, maximized, or fullwidth conditions
+        if (only_one and not c.floating) or c.maximized or (c.fullwidth and not c.floating) then
             c.border_width = 0
+            c.shape = gears.shape.rectangle
         else
-            c.border_width = beautiful.border_width -- your border width
+            c.border_width = beautiful.border_width
+            c.shape = function(cr, w, h)
+                gears.shape.rounded_rect(cr, w, h, beautiful.border_radius)
+            end
         end
     end
 end)
@@ -1128,6 +1130,20 @@ client.connect_signal("property::fullscreen", function(c)
     end
 end)
 
+--~-- Function to remove border radius when fullscreen
+client.connect_signal("property::fullscreen", function(c)
+    if c.fullscreen then
+        -- Remove rounded corners when fullscreen
+        c.shape = gears.shape.rectangle
+        c.border_width = 0
+    else
+        c.shape = function(cr, w, h)
+					gears.shape.rounded_rect(cr, w, h, beautiful.border_radius)
+				end
+    end
+end)
+
+
 
 -- jump to urgent client
 client.connect_signal("property::urgent", function(c)
@@ -1142,3 +1158,9 @@ end)
 
 
 
+
+
+
+
+
+----------------------------------------------------------------------------------

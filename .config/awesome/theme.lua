@@ -11,29 +11,55 @@ local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-local main_color = "#7a00df"
-local main_color_saturated = "#ad00ff"
+local main_bg = "#290031"   -- beautiful.bg_normal
+local main_bg_transparent = "#290031cf" -- beautiful.notification_bg
+local main_color = "#50003E" -- beautiful.bg_focus
+local main_color_saturated = "#ad00ff" -- beautiful.bg_urgent
+local txt_main = "#FFDAF7" -- beautiful.notification_fg
+
+-- green --
+main_bg = "#003110"
+main_bg_transparent = "#003110cf"
+main_color = "#00501B"
+main_color_saturated = "#00FF55"
+txt_main = "#DAFFE6"
+-- green --
+
+-- blue --
+main_bg = "#001031"
+main_bg_transparent = "#001031cf"
+main_color = "#001B50"
+main_color_saturated = "#0055FF"
+txt_main = "#DAE6FF"
+-- blur --
+
+
+
+local main_bg_grey = "#727272" -- beautiful.bg_minimize
+local txt_grey = "#aaaaaa" -- beautiful.fg_normal
+local txt_white = "#ffffff" -- beautiful.fg_focus
+local tm_black = "#000000" -- beautiful.border_normal
 
 theme.font          = "Sans 10"
 theme.menu_font = "Sans 15"
 theme.taglist_icon_size = 20
+theme.border_radius = 13
 
---theme.bg_normal     = "#222222"
-theme.bg_normal     = "#290031"
-theme.bg_focus      = "#50003E"
+theme.bg_normal     = main_bg
+theme.bg_focus      = main_color
 theme.bg_urgent     = main_color_saturated
-theme.bg_minimize   = "#444444"
-theme.bg_systray    = "#290031"
+theme.bg_minimize   = main_bg_grey
+theme.bg_systray    = main_bg
 
-theme.fg_normal     = "#aaaaaa"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
+theme.fg_normal     = txt_grey
+theme.fg_focus      = txt_white
+theme.fg_urgent     = txt_white
+theme.fg_minimize   = txt_white
 
 theme.useless_gap   = dpi(4)
 theme.border_width  = dpi(4)
-theme.border_normal = "#000000"
-theme.border_focus  = main_color
+theme.border_normal = tm_black
+theme.border_focus  = main_color_saturated
 theme.border_marked = main_color_saturated
 
 -- There are other variable sets
@@ -61,14 +87,14 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 -- Variables set for theming notifications:
 -- notification_font
 -- notification_[bg|fg] "#290031"
-theme.notification_bg = "#290031cf"
-theme.notification_fg = "#FFDAF7"
-theme.notification_border_color = "#290031"
+theme.notification_bg = main_bg_transparent
+theme.notification_fg = txt_main
+theme.notification_border_color = main_bg
 theme.notification_border_width = 4
 
---theme.notification_shape =  function(cr, width, height)
---       gears.shape.rounded_rect(cr, width, height, 25)
---    end
+theme.menu_shape = function(cr, width, height)
+    gears.shape.rounded_rect(cr, width, height, 13)
+end
 
 
 -- notification_[width|height|margin]
@@ -115,7 +141,7 @@ theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar
 theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
-theme.wallpaper = "~/D/image/bg/damavand.jpeg"
+theme.wallpaper = "~/D/image/bg/fog-lanscape.jpeg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themes_path.."default/layouts/fairhw.png"
