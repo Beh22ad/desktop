@@ -28,6 +28,8 @@ local home = os.getenv("HOME")
 local batteryarc_widget = require("batteryarc")
 local logout_menu_widget = require("logout-menu")
 local weather_widget = require("weather")
+-- Import the WiFi widget
+local wifi_widget = require("wifi_widget")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -108,53 +110,7 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
 }
--- }}}
 
--- {{{ Menu
--- Create a launcher widget and a main menu
-myawesomemenu = {
-   { "hotkeys", function() hotkeys_popup.show_help(nil, awful.screen.focused()) end },
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", function() awesome.quit() end },
-}
-
-local menu_awesome = { "awesome", myawesomemenu, beautiful.awesome_icon }
-local menu_terminal = { "open terminal", terminal, home .. "/.icons/Papirus/32x32/apps/Terminal.svg"}
-local LosslessCut = { "LosslessCut", function() awful.util.spawn_with_shell("~/D/setup/linux/LosslessCut.AppImage") end, home .. "/.icons/Papirus/32x32/apps/losslesscut.svg" }
-local Inkscape = { "Inkscape", function() awful.util.spawn_with_shell("~/D/setup/linux/Inkscape.AppImage") end, home .. "/.icons/Papirus/32x32/apps/inkscape.svg" }
-local Gimp = { "Gimp", function() awful.util.spawn_with_shell("~/D/setup/linux/gimp.AppImage") end, home .. "/.icons/Papirus/32x32/apps/gimp.svg" }
-local Krita = { "Krita", function() awful.util.spawn_with_shell("~/D/setup/linux/krita.appimage") end, home .. "/.icons/Papirus/32x32/apps/krita.svg" }
-local kdenlive = { "kdenlive", function() awful.util.spawn_with_shell("~/D/setup/linux/kdenlive.AppImage") end, home .. "/.icons/Papirus/32x32/apps/kdenlive.svg" }
-local HandBrake = { "HandBrake", function() awful.util.spawn_with_shell("~/D/setup/linux/HandBrake.AppImage") end, home .. "/.icons/Papirus/32x32/apps/fr.handbrake.ghb.svg" }
-local Supertuxkart = { "Supertuxkart", function() awful.util.spawn_with_shell("~/D/setup/linux/Supertuxkart.AppImage") end, home .. "/.icons/Papirus/32x32/apps/supertuxkart.svg" }
-local Calculator = { "Calculator", function() awful.util.spawn_with_shell("galculator") end, home .. "/.icons/Papirus/32x32/apps/galculator.svg" }
-local Exit = { "Exit", "bl-exit", home .. "/.icons/Papirus/32x32/apps/deepin-crossover.svg" }
-
-mymainmenu = awful.menu({
-	items = {
-			  menu_awesome,
-			  LosslessCut,
-			  Inkscape,
-			  Gimp,
-			  Krita,
-			  kdenlive,
-			  HandBrake,
-			  Calculator,
-			  Supertuxkart,
-			  { "Debian", debian.menu.Debian_menu.Debian },
-
-			 menu_terminal,
-			 Exit,
-			}
-})
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
--- }}}
 
 -- AQI Widget شاخص آلودگی هوای تهران
 local tehran_aqi = require("tehran_aqi")
@@ -305,8 +261,10 @@ local svg_icon_widget = wibox.container.margin(svg_icon_widget0, 5, 5, 5, 5)
 -- Set up the click event to run jgmenu_run
 svg_icon_widget:buttons(awful.util.table.join(
     awful.button({}, 1, function()
-        --awful.spawn.with_shell("jgmenu_run")
         awful.spawn.with_shell("rofi -show drun")
+    end),
+    awful.button({}, 3, function()
+        awful.spawn.with_shell("~/.config/awesome/script/power-menu.sh")
     end)
 ))
 
@@ -509,6 +467,7 @@ local function create_tasklist_widget(s)
                 c._right_click_menu = awful.menu({
                     items = {
                         { "Toggle Floating", function() c.floating = not c.floating end },
+                        { "Toggle On Top", function() c.ontop = not c.ontop end },
                         { "Close", function() c:kill() end }
                     }
                 })
@@ -528,6 +487,7 @@ local function create_tasklist_widget(s)
             awful.client.focus.byidx(-1)
         end)
     )
+
     return awful.widget.tasklist {
         screen = s,
         filter = awful.widget.tasklist.filter.currenttags,
@@ -623,8 +583,7 @@ s.mytasklist = create_tasklist_widget(s)
 					}),
 
             mysystray_widget,
-
-            --temprature_widget,
+			_,wifi_widget,
             download_widget,
             AQI,
             weather_widget({
@@ -634,10 +593,7 @@ s.mytasklist = create_tasklist_widget(s)
             _,time_date_widget,
             --mytextclock,
 
-            logout_menu_widget{
-            font = 'Play 14',
-            onlock = function() awful.spawn.with_shell('i3lock-fancy') end
-        },
+          --  logout_menu_widget{font = 'Play 14', onlock = function() awful.spawn.with_shell'i3lock-fancy') end},
         layout = wibox.layout.fixed.horizontal,
        },
 
@@ -684,8 +640,8 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    --~awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+              --~{description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -775,7 +731,7 @@ globalkeys = gears.table.join(
 	   awful.key({ modkey },     " "    ,     function () awful.util.spawn_with_shell("rofi -show drun") end,{description = "Menu", group = "client"}),
 	   awful.key({ modkey },       "h"     ,     function () awful.util.spawn_with_shell("x-terminal-emulator -T 'htop task manager' -e htop") end,{description = "Htop", group = "client"}),
 	   awful.key({ modkey },       "Escape"     ,     function () awful.util.spawn_with_shell("systemctl suspend") end,{description = "sleep", group = "client"}),
-	   awful.key({ modkey },       "v"     ,     function () awful.util.spawn_with_shell("xfce4-clipman-history") end,{description = "Clip board", group = "client"}),
+	   --~awful.key({ modkey },       "v"     ,     function () awful.util.spawn_with_shell("xfce4-clipman-history") end,{description = "Clip board", group = "client"}),
 
 	   awful.key({ modkey, "Control" }, "k", function() awful.spawn.with_shell("setxkbmap -option ctrl:nocaps") end, {description = "Remap Caps Lock to Ctrl", group = "custom"}),
 
@@ -948,7 +904,6 @@ awful.rules.rules = {
           "vlc",
           "Galculator",
           "Lxappearance",
-          "Pavucontrol",
           "mother.py",
           "oblivion-desktop",
           "Uget-gtk",
@@ -977,9 +932,6 @@ awful.rules.rules = {
        { rule = { class = "qView" },
         properties = { floating = true, maximized = true },
 		},
-		{ rule = { class = "Pavucontrol" },
-        properties = { minimized = true },
-		},
 
     -- Add titlebars to normal clients and dialogs
     { rule_any = {type = { "normal", "dialog" }
@@ -990,12 +942,12 @@ awful.rules.rules = {
      { rule = { class = "Thunar" },
        properties = { screen = 1, tag = "2" } },
      { rule = { class = "Google-chrome" },
-       properties = { screen = 1, tag = "1" } },
+       properties = { screen = 1, tag = "1"  } },
 
      { rule = { class = "Geany" },
        properties = { screen = 1, tag = "3" } },
        { rule = { class = "Pavucontrol" },
-       properties = { screen = 1, tag = "9" } },
+       properties = { screen = 1, tag = "9", floating = true, minimized = true } },
        -- move mpv to active tag
        { rule = { class = "mpv" },
       properties = {
@@ -1088,9 +1040,9 @@ client.connect_signal("request::titlebars", function(c)
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
+--~client.connect_signal("mouse::enter", function(c)
+    --~c:emit_signal("request::activate", "mouse_enter", {raise = false})
+--~end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus;  end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal;  end)

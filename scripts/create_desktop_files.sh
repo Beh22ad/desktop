@@ -26,7 +26,7 @@ EOF
     chmod +x "$app_path"
 }
 
-# Create desktop files for all applications
+#~# Create desktop files for all applications
 create_desktop_file "$HOME/D/setup/linux/krita.appimage"
 create_desktop_file "$HOME/D/setup/linux/blender/blender"
 create_desktop_file "$HOME/D/setup/linux/audacity.AppImage"
@@ -40,5 +40,6 @@ create_desktop_file "$HOME/D/setup/linux/LosslessCut.AppImage"
 create_desktop_file "$HOME/D/setup/linux/qView.AppImage"
 create_desktop_file "$HOME/D/setup/linux/Supertuxkart.AppImage"
 create_desktop_file "$HOME/D/setup/linux/unetbootin.bin"
+create_desktop_file "$HOME/D/setup/linux/VPN/oblivion-desktop-linux-x64/oblivion-desktop"
 
 echo "Desktop files created in $DESKTOP_DIR"

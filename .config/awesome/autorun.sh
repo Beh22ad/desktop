@@ -3,7 +3,6 @@
 pkill picom
 if ! pgrep -x "picom" > /dev/null; then
     picom --config ~/.config/picom.conf &
-  #  picom --config ~/.config/picom-FT-Labs.conf &
 fi
 
 syndaemon -i .5 -K -t -R -d &
@@ -12,19 +11,15 @@ syndaemon -i .5 -K -t -R -d &
 setxkbmap -layout "us,ir" -option "grp:alt_shift_toggle" &
 
 if ! pgrep -x "nm-applet" > /dev/null; then
-    nm-applet &
+   # nm-applet &
 fi
 
 if ! pgrep -x "pnmixer" > /dev/null; then
     pnmixer &
 fi
 
-if ! pgrep -f "mother.py" > /dev/null; then
-    python3 ~/.local/lib/python3.11/site-packages/qtpad/mother.py &
-fi
-
-if ! pgrep -x "xfce4-clipman" > /dev/null; then
-    xfce4-clipman &
+if ! pgrep -x "copyq" > /dev/null; then
+    copyq &
 fi
 
 if ! pgrep -x "redshift-gtk" > /dev/null; then

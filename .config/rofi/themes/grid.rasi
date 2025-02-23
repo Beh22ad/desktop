@@ -20,7 +20,7 @@ window {
 
 mainbox {
     padding: 20px;
-    background-color: rgba(35, 35, 35, 0.7);  /* Adjusted for more transparency */
+    background-color: rgba(35, 35, 35, 0.9);  /* Adjusted for more transparency */
     border-radius: 15px;
 }
 

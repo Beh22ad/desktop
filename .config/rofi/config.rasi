@@ -1,9 +1,12 @@
+@theme "~/.config/rofi/themes/grid.rasi"
 
-@theme "~/.config/rofi/themes/launchpad.rasi"
 configuration {
     disable-history: false;
-    modi: [window,run,ssh,drun];
-    drun-display-format: "{icon} {name}";   // Add this line
-    show-icons: true;                       // Add this line
-    icon-theme: "Papirus-Light";                  // Move this here
-}
+    modi: "window,run,ssh,drun";
+    drun-display-format: "{icon} {name}";
+    show-icons: true;
+    icon-theme: "ePapirus-Dark";
+    me-accept-entry: "!MousePrimary";
+	hover-select: true;
+	}
+

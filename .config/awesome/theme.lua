@@ -61,7 +61,7 @@ theme.border_width  = dpi(4)
 theme.border_normal = tm_black
 theme.border_focus  = main_color_saturated
 theme.border_marked = main_color_saturated
-
+theme.transparent = "#ffffff00"
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
