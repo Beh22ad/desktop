@@ -8,6 +8,7 @@ local dpi = xresources.apply_dpi
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
+local title_icon = os.getenv("HOME") .. "/.config/awesome/icons/titlebar/"
 
 local theme = {}
 
@@ -26,12 +27,22 @@ txt_main = "#DAFFE6"
 -- green --
 
 -- blue --
-main_bg = "#001031"
+main_bg = "#001B50"
 main_bg_transparent = "#001031cf"
 main_color = "#001B50"
 main_color_saturated = "#0055FF"
 txt_main = "#DAE6FF"
+
 -- blur --
+
+-- win98 --
+main_bg = "black"
+main_bg_transparent = "#006E80cf"
+main_color = "#006E80"
+main_color_saturated = "#006E80"
+txt_main = "#DAF9FF"
+
+-- win98 --
 
 
 
@@ -43,12 +54,13 @@ local tm_black = "#000000" -- beautiful.border_normal
 theme.font          = "Sans 10"
 theme.menu_font = "Sans 15"
 theme.taglist_icon_size = 20
-theme.border_radius = 13
+theme.border_radius = 0
+--theme.systray_icon_spacing = 3
 
 theme.bg_normal     = main_bg
 theme.bg_focus      = main_color
 theme.bg_urgent     = main_color_saturated
-theme.bg_minimize   = main_bg_grey
+theme.bg_minimize   = main_bg
 theme.bg_systray    = main_bg
 
 theme.fg_normal     = txt_grey
@@ -57,7 +69,7 @@ theme.fg_urgent     = txt_white
 theme.fg_minimize   = txt_white
 
 theme.useless_gap   = dpi(4)
-theme.border_width  = dpi(4)
+theme.border_width  = dpi(2)
 theme.border_normal = tm_black
 theme.border_focus  = main_color_saturated
 theme.border_marked = main_color_saturated
@@ -90,7 +102,7 @@ theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
 theme.notification_bg = main_bg_transparent
 theme.notification_fg = txt_main
 theme.notification_border_color = main_bg
-theme.notification_border_width = 4
+theme.notification_border_width = 1
 
 theme.menu_shape = function(cr, width, height)
     gears.shape.rounded_rect(cr, width, height, 13)
@@ -115,16 +127,27 @@ theme.menu_margin = 10
 --theme.bg_widget = "#cc0000"
 
 -- Define the image to load
-theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
-theme.titlebar_close_button_focus  = themes_path.."default/titlebar/close_focus.png"
+--theme.titlebar_close_button_normal = themes_path.."default/titlebar/close_normal.png"
+--theme.titlebar_close_button_focus  = themes_path.."default/titlebar/close_focus.png"
+theme.titlebar_close_button_normal = title_icon.."close_normal.svg"
+theme.titlebar_close_button_focus  = title_icon.."close_focus.svg"
 
+--theme.titlebar_minimize_button_normal = themes_path.."default/titlebar/minimize_normal.png"
+--theme.titlebar_minimize_button_focus  = themes_path.."default/titlebar/minimize_focus.png"
 theme.titlebar_minimize_button_normal = themes_path.."default/titlebar/minimize_normal.png"
 theme.titlebar_minimize_button_focus  = themes_path.."default/titlebar/minimize_focus.png"
 
-theme.titlebar_ontop_button_normal_inactive = themes_path.."default/titlebar/ontop_normal_inactive.png"
-theme.titlebar_ontop_button_focus_inactive  = themes_path.."default/titlebar/ontop_focus_inactive.png"
-theme.titlebar_ontop_button_normal_active = themes_path.."default/titlebar/ontop_normal_active.png"
-theme.titlebar_ontop_button_focus_active  = themes_path.."default/titlebar/ontop_focus_active.png"
+
+theme.titlebar_maximized_button_normal_inactive = title_icon.."maximized_normal_inactive.svg"
+theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar/maximized_focus_inactive.png"
+theme.titlebar_maximized_button_normal_active = title_icon.."maximized_normal_active.svg"
+theme.titlebar_maximized_button_focus_active  = title_icon.."maximized_focus_active.svg"
+
+
+theme.titlebar_ontop_button_normal_inactive = title_icon.."ontop_normal_inactive.svg"
+theme.titlebar_ontop_button_focus_inactive  = title_icon.."ontop_focus_inactive.svg"
+theme.titlebar_ontop_button_normal_active = title_icon.."ontop_normal_active.svg"
+theme.titlebar_ontop_button_focus_active  = title_icon.."ontop_focus_active.svg"
 
 theme.titlebar_sticky_button_normal_inactive = themes_path.."default/titlebar/sticky_normal_inactive.png"
 theme.titlebar_sticky_button_focus_inactive  = themes_path.."default/titlebar/sticky_focus_inactive.png"
@@ -136,10 +159,6 @@ theme.titlebar_floating_button_focus_inactive  = themes_path.."default/titlebar/
 theme.titlebar_floating_button_normal_active = themes_path.."default/titlebar/floating_normal_active.png"
 theme.titlebar_floating_button_focus_active  = themes_path.."default/titlebar/floating_focus_active.png"
 
-theme.titlebar_maximized_button_normal_inactive = themes_path.."default/titlebar/maximized_normal_inactive.png"
-theme.titlebar_maximized_button_focus_inactive  = themes_path.."default/titlebar/maximized_focus_inactive.png"
-theme.titlebar_maximized_button_normal_active = themes_path.."default/titlebar/maximized_normal_active.png"
-theme.titlebar_maximized_button_focus_active  = themes_path.."default/titlebar/maximized_focus_active.png"
 
 theme.wallpaper = "~/D/image/bg/fog-lanscape.jpeg"
 

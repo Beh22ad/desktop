@@ -10,9 +10,9 @@ syndaemon -i .5 -K -t -R -d &
 
 setxkbmap -layout "us,ir" -option "grp:alt_shift_toggle" &
 
-if ! pgrep -x "nm-applet" > /dev/null; then
+#if ! pgrep -x "nm-applet" > /dev/null; then
    # nm-applet &
-fi
+#fi
 
 if ! pgrep -x "pnmixer" > /dev/null; then
     pnmixer &
@@ -24,10 +24,6 @@ fi
 
 if ! pgrep -x "redshift-gtk" > /dev/null; then
     redshift-gtk &
-fi
-
-if ! pgrep -x "safeeyes" > /dev/null; then
-    safeeyes &
 fi
 
 if ! pgrep -x "xfce4-power-manager" > /dev/null; then

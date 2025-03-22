@@ -1,35 +1,25 @@
--- If LuaRocks is installed, make sure that packages installed through it are
--- found (e.g. lgi). If LuaRocks is not installed, do nothing.
 pcall(require, "luarocks.loader")
-
--- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
 require("awful.autofocus")
--- Widget and layout library
 local wibox = require("wibox")
--- Theme handling library
 local beautiful = require("beautiful")
--- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
 -- Load Debian menu entries
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 local home = os.getenv("HOME")
---local downloadMeter = home .. '/.config/awesome/script/download-meter-raw.sh'
---local Fadate = home .. "/.config/awesome/script/full-data.sh"
 
 local batteryarc_widget = require("batteryarc")
 local logout_menu_widget = require("logout-menu")
 local weather_widget = require("weather")
 -- Import the WiFi widget
 local wifi_widget = require("wifi_widget")
+local break_reminder = require("break_reminder")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -128,7 +118,7 @@ _:set_left(5)
 -- Keyboard map indicator and switcher
 local mykeyboardlayout = awful.widget.keyboardlayout()
 local keyboard_box = wibox.container.margin(mykeyboardlayout.widget)
-keyboard_box:set_top(5)
+keyboard_box:set_top(4.4)
 keyboard_box:set_left(10)
 keyboard_box:set_right(5)
 local function update_keyboard_layout()
@@ -179,6 +169,18 @@ local capslock_timer = gears.timer {
         )
     end
 }
+
+-- Optional: Configure the widget with custom settings
+break_reminder.init({
+    break_time = 1200, -- 20 minutes (1200)
+    thank_time = 20, -- 20 seconds
+    break_message = "Take a break",
+    thank_message = "Thanks for taking a break",
+    sound_file = "/usr/share/sounds/freedesktop/stereo/complete.oga",
+    icon_color_active = "#33CC33", -- Green when active
+    icon_color_inactive = "#CC3333", -- Red when inactive
+    icon_text = "⏲", -- Timer emoji
+})
 
 
 -- Create a wibox for each screen and add it
@@ -274,7 +276,7 @@ local data_textbox = wibox.widget.textbox()
 data_textbox:set_markup('<span font="Vazirmatn 10" foreground="'..beautiful.notification_fg..'">...</span>')
 
 local function update_data()
-    awful.spawn.easy_async([[bash -c '/home/b/.config/awesome/script/full-data.sh']], function(stdout)
+    awful.spawn.easy_async("bash -c " .. home .. "/.config/awesome/script/jalali.sh", function(stdout)
         -- Trim any trailing newlines or spaces
         local trimmed_output = stdout:gsub("^%s*(.-)%s*$", "%1")
         -- Update the data_textbox with the correct font and color
@@ -298,7 +300,7 @@ gears.timer {
     download_textbox:set_markup('<span font="Vazirmatn 11" foreground="'..beautiful.notification_fg..'">...</span>')
     local download_widget = wibox.container.margin(download_textbox, 5, 5, 5, 5)
     local function update_download()
-    awful.spawn.easy_async([[bash -c '/home/b/.config/awesome/script/download-meter-raw.sh']], function(stdout)
+    awful.spawn.easy_async("bash -c " .. home .. "/.config/awesome/script/download-meter-raw.sh", function(stdout)
         local trimmed_output = stdout:gsub("^%s*(.-)%s*$", "%1")
         -- Update the data_textbox with the correct font and color
         download_textbox:set_markup(string.format('<span font="Vazirmatn 10" foreground="'..beautiful.notification_fg..'">%s</span>', trimmed_output))
@@ -532,11 +534,11 @@ end
 
 
 -- systray
---beautiful.systray_icon_spacing = 5
+beautiful.systray_icon_spacing = 10
 mysystray = wibox.widget.systray()
-mysystray:set_base_size(18)
-local mysystray_widget = wibox.container.margin(mysystray, 5, 2, 5, 0)
---local mysystray_widget = wibox.container.margin(mysystray, 5, 0, 3.5, 8)
+mysystray:set_base_size(9)
+local mysystray_widget = wibox.container.margin(mysystray, 10, 50, 7, 0)
+
 
 
 
@@ -573,7 +575,7 @@ s.mytasklist = create_tasklist_widget(s)
 				layout = wibox.layout.fixed.vertical,
 			--	mykeyboardlayout,
 			keyboard_box,
-			},
+			},_,
 			batteryarc_widget({
 						show_notification_mode = "on_click",
 					--	notification_position = "bottom_right",
@@ -583,7 +585,8 @@ s.mytasklist = create_tasklist_widget(s)
 					}),
 
             mysystray_widget,
-			_,wifi_widget,
+			break_reminder.widget,
+			_,wifi_widget,_,
             download_widget,
             AQI,
             weather_widget({
@@ -888,13 +891,22 @@ awful.rules.rules = {
                      placement = awful.placement.centered + awful.placement.no_overlap+awful.placement.no_offscreen
      }
     },
+        -- Add titlebars to normal clients and dialogs
+	 { rule_any = {type = { "normal", "dialog" }
+		  }, properties = { titlebars_enabled = true  }
+		},
+		{ rule_any = {type = { "normal"}
+		  }, properties = {floating = false }
+		},
+
 
     -- Floating clients.
     { rule_any = {
         instance = {
           "DTA",  -- Firefox addon DownThemAll.
-          "copyq",  -- Includes session name in class.
+          "copyq",
           "pinentry",
+          "DialogInstance",
         },
         class = {
           "Arandr",
@@ -916,67 +928,37 @@ awful.rules.rules = {
           "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
           "Wpa_gui",
           "veromix",
-          "xtightvncviewer"},
+          "xtightvncviewer",
+          "Pavucontrol"},
 
         -- Note that the name property shown in xprop might be set slightly after creation of the client
         -- and the name shown there might not match defined rules here.
         name = {
           "Event Tester",  -- xev.
+          "Find",
         },
         role = {
           "AlarmWindow",  -- Thunderbird's calendar.
           "ConfigManager",  -- Thunderbird's about:config.
           "pop-up",       -- e.g. Google Chrome's (detached) Developer Tools.
         }
-      }, properties = { floating = true }},
+      }, properties = { floating = true , titlebars_enabled = true }},
        { rule = { class = "qView" },
         properties = { floating = true, maximized = true },
 		},
 
-    -- Add titlebars to normal clients and dialogs
-    { rule_any = {type = { "normal", "dialog" }
-      }, properties = { titlebars_enabled = false }
-    },
-
-    -- Set Firefox to always map on the tag named "2" on screen 1.
      { rule = { class = "Thunar" },
-       properties = { screen = 1, tag = "2" } },
+       properties = { screen = 1, tag = "2"  } },
      { rule = { class = "Google-chrome" },
        properties = { screen = 1, tag = "1"  } },
 
      { rule = { class = "Geany" },
-       properties = { screen = 1, tag = "3" } },
+       properties = { screen = 1, tag = "3"  } },
        { rule = { class = "Pavucontrol" },
        properties = { screen = 1, tag = "9", floating = true, minimized = true } },
        -- move mpv to active tag
        { rule = { class = "mpv" },
-      properties = {
-      border_width = 0,
-      },
-      callback = function(c)
-        local function move_to_focused_tag(c)
-            if c.valid then
-                local t = awful.screen.focused().selected_tag
-                if t and c.first_tag ~= t then
-                    c:move_to_tag(t)
-                end
-            end
-        end
-
-        c:connect_signal("property::screen", move_to_focused_tag)
-
-        local tag_selected_signal = function(t)
-            if t.selected then
-                move_to_focused_tag(c)
-            end
-        end
-
-        tag.connect_signal("property::selected", tag_selected_signal)
-
-        c:connect_signal("unmanage", function()
-            tag.disconnect_signal("property::selected", tag_selected_signal)
-        end)
-      end
+      properties = { sticky = true }
     },
     ---
 }
@@ -1007,17 +989,19 @@ client.connect_signal("request::titlebars", function(c)
             c:emit_signal("request::activate", "titlebar", {raise = true})
             awful.mouse.client.move(c)
         end),
+        awful.button({ }, 2, function() -- Middle click (button 2)
+            c.minimized = true
+        end),
         awful.button({ }, 3, function()
             c:emit_signal("request::activate", "titlebar", {raise = true})
             awful.mouse.client.resize(c)
         end)
     )
-
     awful.titlebar(c ) : setup {
         { -- Left
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
+            layout  = wibox.layout.fixed.horizontal,
         },
         { -- Middle
             { -- Title
@@ -1028,10 +1012,10 @@ client.connect_signal("request::titlebars", function(c)
             layout  = wibox.layout.flex.horizontal
         },
         { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
+            --awful.titlebar.widget.floatingbutton (c),
+            --awful.titlebar.widget.maximizedbutton(c),
             awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
+            --awful.titlebar.widget.ontopbutton    (c),
             awful.titlebar.widget.closebutton    (c),
             layout = wibox.layout.fixed.horizontal()
         },
@@ -1043,6 +1027,8 @@ end)
 --~client.connect_signal("mouse::enter", function(c)
     --~c:emit_signal("request::activate", "mouse_enter", {raise = false})
 --~end)
+
+
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus;  end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal;  end)
@@ -1071,7 +1057,7 @@ screen.connect_signal("arrange", function(s)
 end)
 
 
--- fix mpv on top
+-- Handle mpv window behavior
 client.connect_signal("property::fullscreen", function(c)
     if c.class == "mpv" then
         if c.fullscreen then
@@ -1079,6 +1065,17 @@ client.connect_signal("property::fullscreen", function(c)
         else
             c.ontop = true
         end
+        -- Ensure it's raised when transitioning to/from fullscreen
+        c:raise()
+    end
+end)
+
+-- Additionally handle middle-click fullscreen when not focused
+client.connect_signal("button::press", function(c, button)
+    if c.class == "mpv" and button == 2 then  -- Middle click
+        -- Ensure window gets focus and is raised
+       client.focus = c
+       c:raise()
     end
 end)
 
@@ -1111,8 +1108,22 @@ end)
 
 
 
+-- add title bar to floating windows
+client.connect_signal("property::floating", function(c)
+    if c.floating then
+        awful.titlebar.show(c)
+    else
+        awful.titlebar.hide(c)
+    end
+end)
 
 
-
+client.connect_signal("manage", function(c)
+    if c.floating then
+        awful.titlebar.show(c)
+    else
+        awful.titlebar.hide(c)
+    end
+end)
 
 ----------------------------------------------------------------------------------

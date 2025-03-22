@@ -8,6 +8,8 @@ case $- in
       *) return;;
 esac
 
+
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -91,7 +93,7 @@ fi
 #alias ll='ls -l'
 #alias la='ls -A'
 #alias l='ls -CF'
-
+alias p='python3'
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
@@ -122,9 +124,9 @@ function bepass() {
 }
 
 function warp() {
-   cd ~/D/setup/linux/VPN/Warp/
+   cd ~/D/setup/linux/VPN/Warp-plus/
   # ./warp -cfon -country US
-   ./warp
+   ./warp-plus
 
 }
 
@@ -146,11 +148,36 @@ function wpe() {
    cd ~/D/setup/linux/VPN/Warp-plus/
 	./warp-plus -e [2606:4700:d1::c993:5abb:1a22:99d9]:1002
 }
+function ws() {
+   cd ~/D/setup/linux/VPN/Warp-plus/
+	./warp-plus --cfon --country DE
+}
+
 function red() {
 	sudo redshift -l 35.7:51.26 -t 5700:3600 -g 0.8 -m randr -v
 
 }
 
+function r() {
+	ssh -p 2222 -i ~/.ssh/id_rsa redpis5@213.165.242.8
 
+}
+function image() {
+	fzf --preview 'chafa {}'
+}
+#~function video() {
+    #~selected_file=$(fzf)
+    #~if [ -n "$selected_file" ]; then
+        #~mpv "$selected_file"
+    #~fi
+#~}
+alias video='~/D/setup/linux/user/scripts/video.sh'
+
+
+# Set up fzf key bindings and fuzzy completion
+#eval "$(fzf --bash)"
 
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:/opt/nvim-linux64/bin"
+
+#fish

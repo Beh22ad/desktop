@@ -7,10 +7,10 @@
 POSITION=3
 
 #y-offset
-YOFF=17
+YOFF=28
 
 #x-offset
-XOFF=0
+XOFF=-150
 
 #fields to be displayed
 FIELDS=SSID,SECURITY,BARS

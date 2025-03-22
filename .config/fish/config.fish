@@ -44,6 +44,18 @@ end
 function r
     ssh -p 2222 -i ~/.ssh/id_rsa redpis5@213.165.242.8
 end
+function image
+    fzf --preview 'chafa {}'
+end
+function video
+    set selected_file (fzf)
+    if test -n "$selected_file"
+        mpv "$selected_file"
+    end
+end
+# Set up fzf key bindings
+fzf --fish | source
+
 
 set -x PATH "$HOME/.local/bin" $PATH
 set -x PATH "/opt/nvim-linux64/bin" $PATH

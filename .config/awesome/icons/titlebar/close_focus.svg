@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="close_focus.svg"
+   inkscape:version="1.4 (e7c3feb, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.48436815"
+     inkscape:cx="368.52134"
+     inkscape:cy="410.84452"
+     inkscape:window-width="1366"
+     inkscape:window-height="776"
+     inkscape:window-x="0"
+     inkscape:window-y="29"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <rect
+     style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.160781;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+     id="rect1"
+     width="9.2285175"
+     height="8.6710901"
+     x="6.8129997"
+     y="7.4942994" />
+  <path
+     fill-rule="evenodd"
+     clip-rule="evenodd"
+     d="M 20.25,11.999999 C 20.25,16.556309 16.55631,20.25 12,20.25 7.4436487,20.25 3.7500003,16.556309 3.7500003,11.999999 3.7500003,7.4436488 7.4436488,3.7499998 12,3.7499998 c 4.55631,0 8.25,3.693649 8.25,8.2499992 z M 9.4999452,9.4999618 c 0.241637,-0.241638 0.6334008,-0.241638 0.8750508,0 L 12,11.124921 13.624921,9.4999768 c 0.241642,-0.24163 0.633435,-0.24163 0.875076,0 0.241644,0.241639 0.241644,0.6334112 0,0.8750192 l -1.625001,1.625003 1.625001,1.624921 c 0.241644,0.241642 0.241644,0.633435 0,0.875076 -0.241641,0.241644 -0.633434,0.241644 -0.875076,0 L 12,12.875077 10.374996,14.499996 c -0.241625,0.241644 -0.6334007,0.241644 -0.8750347,0 -0.2416371,-0.241641 -0.2416371,-0.633435 0,-0.874995 L 11.124921,11.999999 9.4999452,10.374996 c -0.241643,-0.241625 -0.241643,-0.6334012 0,-0.8750342 z"
+     fill="#1C274C"
+     id="path1"
+     style="fill:#c20000;fill-opacity:1;stroke-width:0.825" />
+</svg>

@@ -145,14 +145,25 @@ local function worker(user_args)
     local function show_battery_status()
         awful.spawn.easy_async([[bash -c 'acpi']],
                 function(stdout, _, _, _)
-                    naughty.destroy(notification)
-                    notification = naughty.notify {
-                        text = stdout,
-                        title = "Battery status",
-                        timeout = 5,
-                        width = 200,
-                        position = notification_position,
-                    }
+                    -- Get bluetooth keyboard battery percentage
+                    awful.spawn.easy_async([[bash -c "upower -i /org/freedesktop/UPower/devices/battery_hid_17o24o79ofbod2o65_battery | awk '/percentage/ {print \$2}'"]],
+                        function(bt_stdout, _, _, _)
+                            local bt_battery = bt_stdout:gsub("%s+", "")
+
+                            local text = stdout
+                            if bt_stdout ~= "" then
+                                text = text .. "\nBluetooth Keyboard: " .. bt_battery
+                            end
+
+                            naughty.destroy(notification)
+                            notification = naughty.notify {
+                                text = text,
+                                title = "Battery status",
+                                timeout = 5,
+                                width = 200,
+                                position = notification_position,
+                            }
+                        end)
                 end)
     end
 

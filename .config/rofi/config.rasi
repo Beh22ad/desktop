@@ -1,4 +1,5 @@
 @theme "~/.config/rofi/themes/grid.rasi"
+// @theme "~/.config/rofi/themes/moji.rasi"
 
 configuration {
     disable-history: false;

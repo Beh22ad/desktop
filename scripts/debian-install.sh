@@ -27,7 +27,6 @@ sudo apt install -y \
     copyq \
     redshift-gtk \
     xfce4-power-manager \
-    safeeyes \
     bluez \
     bluez-tools \
     bluetooth \
@@ -39,12 +38,21 @@ sudo apt install -y \
     thunar \
     thunar-archive-plugin \
     thunar-media-tags-plugin \
-    xfce4-terminal \
+    fish \
     lxappearance \
+    lxterminal \
     htop \
     uget \
     iw \
+    fzf \
+    mpv \
+    chafa \
+    flameshot \
+    lightdm \
     vim
+
+echo "Setting up login manager..."
+sudo dpkg-reconfigure lightdm
 
 # Create necessary directories
 echo "Creating config directories..."
