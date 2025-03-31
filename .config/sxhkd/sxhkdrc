@@ -1,0 +1,59 @@
+# Open terminal
+super + Return
+	xfce4-terminal
+
+# Open Thunar file manager
+super + f
+	thunar
+
+# Open Google Chrome
+super + c
+	google-chrome
+
+# Open Geany text editor
+super + g
+	geany
+
+# Launch rofimoji with specific options
+super + period
+	~/.local/bin/rofimoji --hidden-descriptions --selector-args='-theme ~/.config/rofi/themes/moji.rasi'
+
+# Increase volume by 5%
+super + Up
+	amixer set Master 5%+
+
+# Decrease volume by 5%
+super + Down
+	amixer set Master 5%-
+
+# Increase brightness by 10%
+super + ctrl + Up
+	xbacklight -inc 10
+
+# Decrease brightness by 10%
+super + ctrl + Down
+	xbacklight -dec 10
+
+# Set brightness to 30%
+Scroll_Lock
+	xbacklight -set 30
+
+# Turn off brightness
+super + a
+	xbacklight -set 0
+
+# Set brightness to 30%
+super + q
+	xbacklight -set 30
+
+# Take a screenshot using Flameshot
+Print
+	flameshot gui
+
+#Suspend in XFCE
+super + Escape
+	xfce4-session-logout --suspend
+
+# Run script when Caps Lock is pressed
+@Caps_Lock
+    ~/D/setup/linux/user/scripts/caps.sh

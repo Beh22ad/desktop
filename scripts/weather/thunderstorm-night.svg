@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="weather-icon-tstorms"
+   class="weather-icon weather-icon-white tstorms"
+   viewBox="0 0 32 32"
+   version="1.1"
+   sodipodi:docname="thunderstorm.svg"
+   width="32"
+   height="32"
+   inkscape:version="1.4 (e7c3feb, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="1.544034"
+     inkscape:cx="54.726776"
+     inkscape:cy="24.934685"
+     inkscape:window-width="1320"
+     inkscape:window-height="768"
+     inkscape:window-x="46"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="weather-icon-tstorms" />
+  <style
+     id="style1">.st0{fill:#2885C7;} .st1{fill:#F4A71D;} .st2{fill:#FFFFFF;}</style>
+  <g
+     id="tstorms"
+     transform="matrix(0.5,0,0,0.5,-0.45,-0.45)">
+    <path
+       class="st0"
+       d="m 19.7,53 c -0.2,0 -0.4,0 -0.6,-0.1 -0.7,-0.3 -0.9,-1.1 -0.6,-1.8 l 2.8,-5.8 c 0.3,-0.7 1.1,-0.9 1.8,-0.6 0.7,0.3 0.9,1.1 0.6,1.8 l -2.8,5.8 C 20.6,52.7 20.2,53 19.7,53 Z m -6.6,0 c -0.2,0 -0.4,0 -0.6,-0.1 -0.7,-0.3 -0.9,-1.1 -0.6,-1.8 l 2.8,-5.8 c 0.3,-0.7 1.1,-0.9 1.8,-0.6 0.7,0.3 0.9,1.1 0.6,1.8 l -2.8,5.8 C 14.1,52.7 13.6,53 13.1,53 Z m 33.7,0 c -0.2,0 -0.4,0 -0.6,-0.1 -0.7,-0.3 -0.9,-1.1 -0.6,-1.8 l 2.8,-5.8 c 0.3,-0.7 1.1,-0.9 1.8,-0.6 0.7,0.3 0.9,1.1 0.6,1.8 L 48,52.3 C 47.8,52.7 47.3,53 46.8,53 Z m -6.6,0 C 40,53 39.8,53 39.6,52.9 38.9,52.6 38.7,51.8 39,51.1 l 2.8,-5.8 c 0.3,-0.7 1.1,-0.9 1.8,-0.6 0.7,0.3 0.9,1.1 0.6,1.8 l -2.8,5.8 C 41.2,52.7 40.7,53 40.2,53 Z"
+       id="path1" />
+    <path
+       class="st1"
+       d="m 27.7,59.3 c -0.2,0 -0.5,-0.1 -0.7,-0.2 -0.6,-0.4 -0.8,-1.2 -0.4,-1.8 L 34.5,44.2 H 26.2 L 35.5,31 c 0.4,-0.6 1.2,-0.7 1.8,-0.3 0.6,0.4 0.7,1.3 0.3,1.9 l -6.4,9.1 h 7.9 L 28.8,58.6 c -0.2,0.4 -0.7,0.7 -1.1,0.7 z"
+       id="path2" />
+    <path
+       class="st2"
+       d="m 50.9,22.3 c 0.1,-0.8 0.2,-1.6 0.2,-2.4 0,-7.4 -6,-13.4 -13.4,-13.4 -4.5,0 -8.7,2.3 -11.2,6 -1.1,-0.5 -2.4,-0.8 -3.6,-0.8 -5.1,0 -9.3,4.2 -9.3,9.3 v 0.3 c -4.1,1.4 -7,5.2 -7,9.7 0,5.6 4.6,10.2 10.2,10.2 h 5 c 1.6,0 1.5,-2.6 0,-2.6 h -5 c -4.2,0 -7.5,-3.4 -7.5,-7.5 0,-3.6 2.5,-6.7 6.1,-7.4 l 1.3,-0.2 -0.2,-1.3 c -0.1,-0.4 -0.1,-0.8 -0.1,-1.1 0,-3.6 3,-6.6 6.6,-6.6 1.2,0 2.4,0.3 3.5,1 l 1.2,0.7 0.7,-1.3 c 1.9,-3.5 5.5,-5.7 9.5,-5.7 5.9,0 10.7,4.8 10.7,10.7 0,1.1 -0.2,2.2 -0.5,3.3 l -0.8,1.8 2.1,-0.1 h 0.3 c 3.8,0 6.8,3.1 6.8,6.8 0,3.8 -3.1,6.8 -6.8,6.8 H 44 c -1.7,0 -2,2.6 0,2.6 h 5.7 c 5.2,0 9.5,-4.3 9.5,-9.5 0,-4.7 -3.7,-8.7 -8.3,-9.3 z"
+       id="path3" />
+  </g>
+</svg>

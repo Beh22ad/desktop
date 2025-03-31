@@ -1,0 +1,9 @@
+{
+    "bitrate": 5500,
+    "keyint_sec": 0,
+    "preset": "superfast",
+    "profile": "high",
+    "rate_control": "CBR",
+    "tune": "zerolatency",
+    "x264opts": "bframes=2\nb-adapt=0\npartitions=none\nscenecut=0\nno-weightb\nweightp=0\nsliced-threads"
+}

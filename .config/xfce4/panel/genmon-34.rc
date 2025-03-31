@@ -1,0 +1,6 @@
+Command=/home/b/D/setup/linux/user/scripts/break_reminder.sh  daemon &
+UseLabel=0
+Text=(genmon)
+UpdatePeriod=30000
+Font=Sans 10
+

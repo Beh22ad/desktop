@@ -1,0 +1,6 @@
+Command=/home/b/D/setup/linux/user/scripts/weather-fa2.sh
+UseLabel=0
+Text=(genmon)
+UpdatePeriod=300000
+Font=Sans 10
+

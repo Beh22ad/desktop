@@ -1,0 +1,6 @@
+Command=/home/b/D/setup/linux/user/scripts/xfce-tehran_aqi.sh
+UseLabel=0
+Text=(genmon)
+UpdatePeriod=180000
+Font=Sans 10
+

@@ -1,0 +1,6 @@
+Command=/home/b/D/setup/linux/user/scripts/download-meter-raw.sh
+UseLabel=0
+Text=(genmon)
+UpdatePeriod=5000
+Font=Sans 10
+
