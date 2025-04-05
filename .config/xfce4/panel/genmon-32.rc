@@ -1,6 +1,6 @@
 Command=/home/b/D/setup/linux/user/scripts/xfce-date.sh d
 UseLabel=0
 Text=(genmon)
-UpdatePeriod=30000
-Font=Vazirmatn Medium 9
+UpdatePeriod=60000
+Font=Vazirmatn Medium 11
 

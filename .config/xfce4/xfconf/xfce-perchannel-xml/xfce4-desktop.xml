@@ -26,7 +26,7 @@
       <property name="monitoreDP1" type="empty">
         <property name="workspace0" type="empty">
           <property name="color-style" type="int" value="1"/>
-          <property name="image-style" type="int" value="0"/>
+          <property name="image-style" type="int" value="1"/>
           <property name="last-image" type="string" value="/usr/share/images/desktop-base/default"/>
         </property>
         <property name="workspace1" type="empty">
@@ -48,7 +48,7 @@
     </property>
   </property>
   <property name="last" type="empty">
-    <property name="window-width" type="int" value="619"/>
+    <property name="window-width" type="int" value="682"/>
     <property name="window-height" type="int" value="532"/>
   </property>
   <property name="desktop-icons" type="empty">

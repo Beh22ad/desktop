@@ -61,7 +61,7 @@ if [[ -n "$aqi_value" ]]; then
     echo "<txt><span weight='normal' fgcolor='White' bgcolor='#4CAF50' gravity='east'  > $aqi_value </span></txt>"
 
     elif (( aqi_value < 100 )); then
-        echo "<txt><span weight='normal' fgcolor='White' bgcolor='#241F31' gravity='east'  > $aqi_value </span></txt>"
+        echo "<txt><span weight='normal' fgcolor='White' gravity='east'  > $aqi_value </span></txt>"
     elif (( aqi_value < 120 )); then
          echo "<txt><span weight='normal' fgcolor='White' bgcolor='#FF9800' gravity='east'  > $aqi_value </span></txt>"
     else

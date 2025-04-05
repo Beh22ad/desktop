@@ -94,7 +94,7 @@ pjd=$(toPersian "$jd")
 # Check the argument and output accordingly
 case "$1" in
     d)
-        echo "$persianDay"
+        echo "<txt><span weight='normal' fgcolor='White' gravity='east'  > $persianDay </span></txt>"
         ;;
     s)
         echo "$pjm/$pjd"

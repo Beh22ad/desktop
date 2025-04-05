@@ -1,0 +1,6 @@
+Command=/home/b/D/setup/linux/user/scripts/xfce-time-data.sh
+UseLabel=0
+Text=(genmon)
+UpdatePeriod=60000
+Font=Vazirmatn 11
+

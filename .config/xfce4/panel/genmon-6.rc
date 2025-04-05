@@ -1,0 +1,6 @@
+Command=/home/b/D/setup/linux/user/scripts/xfce-show-desktop.sh
+UseLabel=0
+Text=(genmon)
+UpdatePeriod=15000
+Font=Sans 11
+

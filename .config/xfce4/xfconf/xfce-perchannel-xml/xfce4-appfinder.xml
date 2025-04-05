@@ -7,7 +7,7 @@
     <property name="window-height" type="int" value="542"/>
     <property name="window-width" type="int" value="698"/>
     <property name="pane-position" type="int" value="180"/>
-    <property name="category" type="string" value="System"/>
+    <property name="category" type="string" value="All Applications"/>
   </property>
   <property name="actions" type="array">
     <value type="int" value="5"/>

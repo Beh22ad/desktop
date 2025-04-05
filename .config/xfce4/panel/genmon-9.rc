@@ -1,0 +1,6 @@
+Command=/home/b/D/setup/linux/user/scripts/xfce-weather.sh
+UseLabel=0
+Text=(genmon)
+UpdatePeriod=300000
+Font=Sans 10
+
